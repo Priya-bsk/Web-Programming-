@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health & Wellbeing Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            text-align: center;
+            padding: 40px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        select, button, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #ff758c;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #ff4f7b;
+        }
+
+        .output {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .journal {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-container"></div>
+<script src="include-nav.js"></script>
+    <div class="container">
+        <h1>The Cognitive Compass</h1>
+
+        <label for="mood">How are you feeling today?</label>
+        <select id="mood">
+            <option value="Happy">😊 Happy</option>
+            <option value="Calm">😌 Calm</option>
+            <option value="Stressed">😰 Stressed</option>
+            <option value="Anxious">😟 Anxious</option>
+            <option value="Sad">😢 Sad</option>
+        </select>
+        <button onclick="getWellnessTip()">Get Wellbeing Tip</button>
+        <p class="output" id="tip"></p>
+
+        <div class="journal">
+            <h2>Daily Journal</h2>
+            <textarea id="journalEntry" rows="4" placeholder="Write about your thoughts and feelings..."></textarea>
+            <button onclick="saveJournal()">Save Entry</button>
+        </div>
+    </div>
+
+    <script>
+        function getWellnessTip() {
+            let mood = document.getElementById("mood").value;
+            let tips = {
+                "Happy": "Keep spreading positivity! Maybe share your happiness with a friend.",
+                "Calm": "Enjoy the peace. Consider meditating for 5 minutes to maintain your calm.",
+                "Stressed": "Take deep breaths. Try a 5-minute break with soft music.",
+                "Anxious": "Ground yourself: Name 5 things you can see, 4 things you can touch, 3 you can hear, 2 you can smell, 1 you can taste.",
+                "Sad": "Talk to someone you trust. Journaling might also help process your emotions."
+            };
+            document.getElementById("tip").innerText = tips[mood];
+        }
+
+        function saveJournal() {
+            let entry = document.getElementById("journalEntry").value;
+            if (entry.trim() === "") {
+                alert("Please write something before saving.");
+                return;
+            }
+            alert("Journal entry saved successfully!");
+            document.getElementById("journalEntry").value = "";
+        }
+    </script>
+</body>
+</html>

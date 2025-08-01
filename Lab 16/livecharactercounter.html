@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Character Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 14px;
+            margin: 5px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #clear {
+            background-color: #f44336;
+            color: white;
+        }
+
+        #clear:hover {
+            background-color: #d32f2f;
+        }
+
+        #submitbtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #submitbtn:disabled {
+            background-color: #9e9e9e;
+            cursor: not-allowed;
+        }
+
+        #res {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Live Character Counter</h3>
+        <input type="text" id="text" placeholder="Type something...">
+        <div>
+            <button id="clear">Clear</button>
+            <button id="submitbtn" onclick="submit()">Submit</button>
+        </div>
+        <p id="res">Character count: 0</p>
+    </div>
+
+    <script>
+        const text = document.getElementById("text");
+        const clear = document.getElementById("clear");
+        const submitbtn = document.getElementById("submitbtn");
+        const result = document.getElementById("res");
+
+        text.oninput = function () {
+            let word = text.value;
+            result.textContent = `Character count: ${word.length}`;
+            submitbtn.disabled = word.length > 50;
+        }
+
+        clear.onclick = function () {
+            text.value = "";
+            result.textContent = "Character count: 0";
+            submitbtn.disabled = false;
+        }
+
+        function submit() {
+            submitbtn.disabled = true;
+            alert("Submitted!");
+        }
+    </script>
+</body>
+</html>

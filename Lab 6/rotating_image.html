@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rotating Image Animation</title>
+  <style>
+    /* Reset and base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e0f7fa, #fce4ec);
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 2em;
+      color: #333;
+    }
+
+    .rotate-image {
+      width: 300px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      animation: rotate 6s linear infinite;
+      transition: transform 0.3s ease;
+    }
+
+    .rotate-image:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Rotating Image Animation</h1>
+  <br><br>
+  <img 
+    class="rotate-image" 
+    src="rainbow.jpg" 
+    alt="Picture of a rainbow" 
+    loading="lazy" 
+    title="rainbow"
+  />
+
+</body>
+</html>

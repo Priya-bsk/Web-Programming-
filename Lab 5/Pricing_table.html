@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XYZ Broadband Pricing Table</title>
+    <style>
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            color: #2c3e50;
+        }
+
+        /* Pricing Table Layout */
+        .pricingtable {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        /* Individual Plan Card */
+        .card {
+            background-color: #ffffff;
+            padding: 30px 20px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            width: 240px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+
+        .card p {
+            font-size: 1.1em;
+            margin: 8px 0;
+        }
+
+        /* Premium Plan Highlight */
+        .premium {
+            border: 2px solid #daa520;
+            background: linear-gradient(to bottom right, #fff8dc, #fefefe);
+            position: relative;
+        }
+
+        .premium::before {
+            content: "Most Popular";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #daa520;
+            color: #fff;
+            padding: 5px 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>XYZ Broadband Plans</h1>
+    <div class="pricingtable">
+        <div class="card">
+            <h3>Basic</h3>
+            <p>₹500/month</p>
+            <p>10 Mbps</p>
+        </div>
+        <div class="card">
+            <h3>Standard</h3>
+            <p>₹1000/month</p>
+            <p>50 Mbps</p>
+        </div>
+        <div class="card premium">
+            <h3>Premium</h3>
+            <p>₹2000/month</p>
+            <p>100 Mbps</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Category Selector</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #ffebf0;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            background-color: #f0f7ff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            max-width: 550px;
+            margin: 50px auto;
+        }
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 25px;
+            color: #343a40;
+        }
+
+        input[type="number"], button {
+            padding: 12px 20px;
+            font-size: 18px;
+            margin-top: 15px;
+            border-radius: 8px;
+            border: 2px solid #dcdcdc;
+        }
+
+        input[type="number"] {
+            width: 65%;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #6c63ff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #5a4ef1;
+            transform: scale(1.05);
+        }
+
+        .radio-buttons {
+            margin-top: 20px;
+            text-align: left;
+            font-size: 18px;
+            color: #343a40;
+        }
+
+        .radio-buttons input {
+            margin-right: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        ul li {
+            font-size: 18px;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        ul li:nth-child(odd) {
+            background-color: #e0f7fa; /* Light Cyan */
+        }
+
+        ul li:nth-child(even) {
+            background-color: #f8bbd0; /* Light Pink */
+        }
+
+        ul li:hover {
+            background-color: #ffccbc; /* Light Peach */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <h1>Number Category Selector</h1>
+        <p>Priya Baskar 23BCE1033</p>
+        <label for="limit">Enter a limit:</label>
+        <input type="number" id="limit" placeholder="Enter a number">
+        
+        <div class="radio-buttons">
+            <input type="radio" id="prime" name="category" value="prime">
+            <label for="prime">Prime Numbers</label><br>
+            <input type="radio" id="fibonacci" name="category" value="fibonacci">
+            <label for="fibonacci">Fibonacci Numbers</label><br>
+            <input type="radio" id="perfectSquares" name="category" value="perfectSquares">
+            <label for="perfectSquares">Perfect Squares</label>
+        </div>
+
+        <button id="generate">Generate Numbers</button>
+
+        <ul id="result"></ul>
+    </div>
+
+    <script>
+        document.getElementById("generate").addEventListener("click", function() {
+            const limit = parseInt(document.getElementById("limit").value); 
+            const category = document.querySelector('input[name="category"]:checked'); 
+            const resultList = document.getElementById("result");
+            resultList.innerHTML = ""; 
+
+            if (isNaN(limit) || limit <= 0) {
+                alert("Please enter a valid positive number.");
+                return;
+            }
+
+            if (!category) {
+                alert("Please select a number category.");
+                return;
+            }
+
+            const categoryValue = category.value;
+            
+            if (categoryValue === "prime") {
+                generatePrimes(limit);
+            } else if (categoryValue === "fibonacci") {
+                generateFibonacci(limit);
+            } else if (categoryValue === "perfectSquares") {
+                generatePerfectSquares(limit);
+            }
+
+            function generatePrimes(limit) {
+                for (let num = 2; num <= limit; num++) {
+                    if (isPrime(num)) {
+                        const li = document.createElement("li");
+                        li.textContent = num;
+                        resultList.appendChild(li);
+                    }
+                }
+            }
+
+            function isPrime(num) {
+                for (let i = 2; i <= Math.sqrt(num); i++) {
+                    if (num % i === 0) {
+                        return false;
+                    }
+                }
+                return num > 1;
+            }
+
+            function generateFibonacci(limit) {
+                let a = 0, b = 1;
+                while (a <= limit) {
+                    const li = document.createElement("li");
+                    li.textContent = a;
+                    resultList.appendChild(li);
+                    const next = a + b;
+                    a = b;
+                    b = next;
+                }
+            }
+
+            function generatePerfectSquares(limit) {
+                let num = 1;
+                while (num * num <= limit) {
+                    const li = document.createElement("li");
+                    li.textContent = num * num;
+                    resultList.appendChild(li);
+                    num++;
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

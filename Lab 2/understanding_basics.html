@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .city {
+      background-color: rgb(173, 230, 221);
+      color: black;
+      border: 2px solid black;
+      margin: 20px;
+      padding: 10px;
+    }
+    #myTitle {
+      background-color: rgb(173, 182, 230);
+      color: black;
+      border: 2px solid black;
+      margin: 20px;
+      padding: 10px;
+    }
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Text Formatting and Elements -->
+  <p style="border:1px solid black">Web Programming</p>
+  <div style="border:1px solid green">Lab</div>
+  <p>Both p and div elements are block elements</p>
+
+  <p>This is an inline <span style="border: 1px solid red">Span</span> element inside a paragraph</p>
+  <p>Current time: <time>4:30 pm</time></p>
+
+  <!-- Semantic Article -->
+  <article>
+    <h2>Article</h2>
+    <p>Testing the article element</p>
+  </article>
+
+  <!-- Headings -->
+  <h1>Main Heading (h1)</h1>
+  <h2>Subheading (h2)</h2>
+  <h3>Section Heading (h3)</h3>
+  <h4>Topic Title (h4)</h4>
+  <h5>Minor Heading (h5)</h5>
+  <h6>Smallest Heading (h6)</h6>
+
+  <!-- Section and City Examples -->
+  <div>
+    <h1 id="myTitle">Learning about cities across the world</h1>
+  </div>
+
+  <div class="city">
+    <h2>London</h2>
+    <p>London is in England</p>
+  </div>
+
+  <div class="city">
+    <h2>New York</h2>
+    <p>New York is in USA</p>
+  </div>
+
+  <div class="city">
+    <h2>Tokyo</h2>
+    <p>Tokyo is in Japan</p>
+  </div>
+
+  <!-- Address -->
+  <h2>Address element</h2>
+  <address>
+    Written by <a href="mailto:abc@example.com">ABC</a>.<br>
+    Visit us at:<br>
+    Example.com<br>
+    Xyz Street<br>
+    India
+  </address>
+
+  <!-- Lists -->
+  <h2>Unordered List</h2>
+  <ul>
+    <li>HTML</li>
+    <li>CSS</li>
+    <li>JavaScript</li>
+  </ul>
+
+  <h2>Ordered List</h2>
+  <ol>
+    <li>Login</li>
+    <li>View Dashboard</li>
+    <li>Logout</li>
+  </ol>
+
+  <!-- Table -->
+  <h2>Basic Table</h2>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Country</th>
+    </tr>
+    <tr>
+      <td>Alice</td>
+      <td>USA</td>
+    </tr>
+    <tr>
+      <td>Kenji</td>
+      <td>Japan</td>
+    </tr>
+  </table>
+
+  <!-- Forms -->
+  <h2>Basic Form</h2>
+  <form>
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" placeholder="Enter your name"><br><br>
+
+    <label for="bio">Short Bio:</label><br>
+    <textarea id="bio" rows="4" cols="30" placeholder="Write something..."></textarea><br><br>
+
+    <label for="country">Country:</label>
+    <select id="country">
+      <option>India</option>
+      <option>USA</option>
+      <option>UK</option>
+    </select><br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- Responsive Images -->
+  <h2>Responsive Image</h2>
+  <p>This is a random paragraph used to try out viewport</p>
+  <img src="iphone.webp" style="width: 30%" alt="iphone image">
+  <img src="iphone.webp" style="max-width:30%;height:auto;" alt="iphone image using max-width">
+  <h1 style="font-size:10vw">Iphone</h1>
+
+  <!-- Entities -->
+  <h3>Entity</h3>
+  <p>Non-breaking space &nbsp;Testing</p>
+  <p>Lesser than &lt; <br>Delta &Delta;<br> Heart &hearts;</p>
+
+  <!-- Horizontal Rule and Line Break -->
+  <hr>
+  <p>This is a line break example<br>See how this line goes down.</p>
+
+  <!-- Canvas -->
+  <h2>Canvas</h2>
+  <canvas id="myCanvas" width="200" height="100" style="border:1px solid black">Trying out canvas</canvas>
+
+  
+
+  <!-- Navigation and Footer -->
+  <nav>
+    <h3>Navigation</h3>
+    <a href="#">Home</a> |
+    <a href="#">About</a> |
+    <a href="#">Contact</a>
+  </nav>
+
+  <footer>
+    <p>Copyright © 2025</p>
+  </footer>
+
+</body>
+</html>

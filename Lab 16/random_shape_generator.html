@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Shapes Rain</title>
+    <style>
+        body { text-align: center; overflow: hidden; background: #f0f0f0; }
+        .shape { position: absolute; width: 50px; height: 50px; }
+        .circle { border-radius: 50%; }
+        .triangle { width: 0; height: 0; border-left: 25px solid transparent; border-right: 25px solid transparent; border-bottom: 50px solid; }
+    </style>
+</head>
+<body>
+    <h2>Random Falling Shapes</h2>
+    <button onclick="generateShapes()">Generate Shapes</button>
+    <div id="container"></div>
+    
+    <script>
+        function randomColor() {
+            return '#' + Math.floor(Math.random()*16777215).toString(16);
+        }
+        
+        function createShape() {
+            let shape = document.createElement("div");
+            let shapeType = ["circle", "square", "triangle"][Math.floor(Math.random() * 3)];
+            shape.classList.add("shape", shapeType);
+            
+            let xPos = Math.random() * window.innerWidth;
+            let yPos = -50;
+            
+            shape.style.left = `${xPos}px`;
+            shape.style.top = `${yPos}px`;
+            shape.style.backgroundColor = randomColor();
+            
+            if (shapeType === "triangle") {
+                shape.style.backgroundColor = "transparent";
+                shape.style.borderBottomColor = randomColor();
+            }
+            
+            document.getElementById("container").appendChild(shape);
+            animateShape(shape);
+        }
+        
+        function animateShape(shape) {
+            let speed = Math.random() * 5 + 2;
+            let pos = 0;
+            let fall = setInterval(() => {
+                if (pos < window.innerHeight) {
+                    pos += speed;
+                    shape.style.top = `${pos}px`;
+                } else {
+                    clearInterval(fall);
+                    shape.remove();
+                }
+            }, 20);
+        }
+        
+        function generateShapes() {
+            for (let i = 0; i < 10; i++) {
+                createShape();
+            }
+        }
+    </script>
+</body>
+</html>

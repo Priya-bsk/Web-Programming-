@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive Image Viewer - Z-Index</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f0f4f8;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    p.description {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      color: #555;
+      font-size: 1rem;
+    }
+
+    .image-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin: 0 auto;
+    }
+
+    img {
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    img:hover {
+      transform: scale(1.05);
+    }
+
+    #img1 {
+      top: 50px;
+      left: 40px;
+      z-index: 3;
+    }
+
+    #img2 {
+      top: 60px;
+      left: 80px;
+      z-index: 2;
+    }
+
+    #img3 {
+      top: 80px;
+      left: 120px;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Interactive Image Viewer</h1>
+  <p class="description">
+    This interactive viewer demonstrates the use of <strong>z-index</strong> in CSS to layer images.
+    Clicking on an image will bring it to the front. Each click increases the image's z-index dynamically using JavaScript.
+  </p>
+
+  <div class="image-container">
+    <img src="Urban_life_3.jpeg" alt="Urban Life 3" title="Click to bring forward" id="img1">
+    <img src="Urban_life_2.jpeg" alt="Urban Life 2" title="Click to bring forward" id="img2">
+    <img src="Urban_life_1.jpeg" alt="Urban Life 1" title="Click to bring forward" id="img3">
+  </div>
+
+  <script>
+    const img1 = document.getElementById("img1");
+    const img2 = document.getElementById("img2");
+    const img3 = document.getElementById("img3");
+    let maxIndex = 3;
+
+    img1.onclick = () => {
+      maxIndex++;
+      img1.style.zIndex = maxIndex;
+    };
+
+    img2.onclick = () => {
+      maxIndex++;
+      img2.style.zIndex = maxIndex;
+    };
+
+    img3.onclick = () => {
+      maxIndex++;
+      img3.style.zIndex = maxIndex;
+    };
+  </script>
+
+</body>
+</html>

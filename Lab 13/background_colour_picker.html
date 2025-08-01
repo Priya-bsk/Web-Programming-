@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Color Picker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            transition: background-color 0.5s ease;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        select, input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s ease-in-out;
+        }
+        select:hover, input:hover {
+            border-color: #888;
+        }
+        .buttons {
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, opacity 0.3s;
+        }
+        .reset-btn { background-color: red; color: white; }
+        .random-btn { background-color: green; color: white; }
+        .reset-btn:hover { background-color: darkred; }
+        .random-btn:hover { background-color: darkgreen; }
+        .color-name {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .preview {
+            width: 100px;
+            height: 100px;
+            margin: 10px auto;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+            transition: background-color 0.3s ease;
+        }
+        .sections {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .section {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Background Color Picker</h2>
+        <select id="colorDropdown">
+            <option value="">Select a color</option>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="yellow">Yellow</option>
+        </select>
+        <input type="text" id="hexInput" placeholder="Enter hex code (e.g., #ff5733)">
+        <div class="preview"></div>
+        <div class="buttons">
+            <button class="reset-btn" id="resetBtn">Reset</button>
+            <button class="random-btn" id="randomBtn">Random Color</button>
+        </div>
+        <div class="color-name" id="colorName">Current Color: None</div>
+        <div class="sections">
+            <div class="section" id="section1"></div>
+            <div class="section" id="section2"></div>
+            <div class="section" id="section3"></div>
+        </div>
+    </div>
+
+    <script>
+        const body = document.body;
+        const colorDropdown = document.getElementById("colorDropdown");
+        const hexInput = document.getElementById("hexInput");
+        const resetBtn = document.getElementById("resetBtn");
+        const randomBtn = document.getElementById("randomBtn");
+        const colorName = document.getElementById("colorName");
+        const preview = document.querySelector(".preview");
+        const sections = document.querySelectorAll(".section");
+        
+        colorDropdown.onchange = function () {
+            if (this.value) {
+                body.style.backgroundColor = this.value;
+                colorName.textContent = `Current Color: ${this.value}`;
+                preview.style.backgroundColor = this.value;
+            }
+        };
+        
+        hexInput.oninput = function () {
+            if (/^#[0-9A-F]{6}$/i.test(this.value)) {
+                body.style.backgroundColor = this.value;
+                colorName.textContent = `Current Color: ${this.value}`;
+                preview.style.backgroundColor = this.value;
+            }
+        };
+        
+        resetBtn.onclick = function () {
+            body.style.backgroundColor = "white";
+            colorName.textContent = "Current Color: None";
+            preview.style.backgroundColor = "white";
+        };
+        
+        randomBtn.onclick = function () {
+            let randomColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+            body.style.backgroundColor = randomColor;
+            colorName.textContent = `Current Color: ${randomColor}`;
+            preview.style.backgroundColor = randomColor;
+        };
+        
+        sections.forEach(section => {
+            section.onclick = function () {
+                let color = body.style.backgroundColor;
+                this.style.backgroundColor = color;
+            };
+        });
+
+        [colorDropdown, hexInput, resetBtn, randomBtn].forEach(el => {
+            el.onmouseover = function () {
+                this.style.opacity = "0.7";
+            };
+            el.onmouseout = function () {
+                this.style.opacity = "1";
+            };
+        });
+    </script>
+</body>
+</html>

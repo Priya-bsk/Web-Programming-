@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Table Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        
+        #container {
+            background-color: #e7ac0b83;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 50px auto;
+        }
+        
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #af704c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #e25a0b;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        
+        ul li {
+            font-size: 18px;
+            padding: 8px;
+            margin: 5px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        
+        ul li:nth-child(even) {
+            background-color: #e6f7ff;
+        }
+        
+        ul li:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Multiplication Table Generator</h1>
+        <p>Priya Baskar 23BCE1033</p>
+        <label for="number">Enter a number:</label>
+        <input type="number" id="number" placeholder="Enter a number" />
+        <br><br>
+        <button id="generate">Generate Table</button>
+        
+        <ul id="tableList"></ul>
+    </div>
+
+    <script>
+          const generateButton = document.getElementById("generate");
+          const tableList = document.getElementById("tableList");
+
+          generateButton.addEventListener("click", function() {
+            const number = document.getElementById("number").value; 
+            tableList.innerHTML = ""; 
+        
+            if (number && number > 0) {
+                for (let i = 1; i <= 10; i++) {
+                    const li = document.createElement("li");
+                    li.textContent = `${number} x ${i} = ${number * i}`;
+                    tableList.appendChild(li);
+                }
+            } else {
+                alert("Please enter a valid number!");
+            }
+        });
+
+    </script>
+</body>
+</html>

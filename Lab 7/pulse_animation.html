@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pulsing Button</title>
+  <style>
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #000000;
+      margin: 0;
+    }
+
+    .pulse-button {
+      padding: 15px 30px;
+      font-size: 16px;
+      background-color: #b434db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      outline: none;
+      transition: transform 0.2s ease;
+    }
+
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1); 
+      }
+      100% {
+        transform: scale(1); 
+      }
+    }
+
+    .pulse-button:hover {
+      animation: pulse 0.6s ease-in-out infinite; 
+      background-color: #630c7e;
+    }
+  </style>
+</head>
+<body>
+
+  <button class="pulse-button">Urban Life Gallery</button>
+
+</body>
+</html>

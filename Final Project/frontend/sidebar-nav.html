@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - Sidebar Navigation</title>
+    <style>
+        :root {
+            /* Light mode variables */
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #6c757d;
+            --accent-color: #9dc5bb;
+            --hover-color: #f1d3d3;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --category-bg: #f0f4f9;
+        }
+
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: var(--bg-secondary);
+            height: 100vh;
+            overflow-y: auto;
+            position: fixed;
+            left: 0;
+            top: 0;
+            box-shadow: 2px 0 10px var(--shadow-color);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .sidebar-content {
+            padding: 15px 0;
+            background-color:#cb98cf80;
+        }
+
+        .nav-category {
+            padding: 10px 15px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background-color: var(--category-bg);
+            margin-top: 10px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover {
+            background-color: #cb98cf;
+            border-left-color: var(--accent-color);
+        }
+
+        .nav-item.active {
+            background-color: var(--hover-color);
+            border-left-color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .nav-icon {
+            margin-right: 10px;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin 0.3s ease;
+            background-color: var(--bg-primary);
+            min-height: 100vh;
+        }
+
+        /* Toggle Button */
+        .toggle-sidebar {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1100;
+            background-color: var(--bg-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+
+        /* Responsive Styles */
+        
+            .sidebar {
+                transform: translateX(-100%);
+                width: 240px;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            body.sidebar-active {
+                overflow: hidden;
+            }
+            
+            .overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+            
+            .overlay.active {
+                display: block;
+            }
+        
+    </style>
+</head>
+<body>
+    <!-- Sidebar Toggle Button -->
+    <button class="toggle-sidebar" id="toggleSidebar" onclick="togglebar(event)">☰</button>
+    
+    <!-- Overlay for mobile -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        
+        
+        <div class="sidebar-content">
+            <!-- Dashboard Section -->
+            <div class="nav-category">Overview</div>
+            <a href="dashboard.html" class="nav-item "><span class="nav-icon">📊</span> Dashboard</a>
+            
+            <a href="academic_progress.html" class="nav-item"><span class="nav-icon">📈</span> Academic Progress</a>
+            <a href="calendar.html" class="nav-item"><span class="nav-icon">📅</span> Calendar</a>
+            
+            <!-- Academic Tools -->
+            <div class="nav-category">Academic Tools</div>
+            <a href="course.html" class="nav-item"><span class="nav-icon">📚</span> Courses</a>
+            <a href="exam_and_assignment_tracker.html" class="nav-item"><span class="nav-icon">📖</span> Exams and Assignments</a>
+            <a href="notes.html" class="nav-item"><span class="nav-icon">📝</span> Notes</a>
+            <a href="gpa_calc.html" class="nav-item"><span class="nav-icon">🧮</span> GPA Calculator</a>
+            
+            <!-- Study Tools -->
+            <div class="nav-category">Study Tools</div>
+            <a href="timer.html" class="nav-item"><span class="nav-icon">⏳</span> Timer</a>
+            <a href="flashcard.html" class="nav-item"><span class="nav-icon">🃏</span> Flashcards</a>
+            <a href="mind_map.html" class="nav-item"><span class="nav-icon">🧠</span> Mind map</a>
+            <a href="task_manager.html" class="nav-item"><span class="nav-icon">✅</span> Task Manager</a>
+            <a href="study_and_chill.html" class="nav-item"><span class="nav-icon">🎶</span> Study and Chill</a>
+            <a href="study_reflection.html" class="nav-item"><span class="nav-icon">📝</span> Study Reflection</a>
+            <a href="vision_board.html" class="nav-item"><span class="nav-icon">🖍️</span> Interactive Vision Board</a>
+            
+            <!-- Mental Wellbeing -->
+            <div class="nav-category">Mental Wellbeing</div>
+            <a href="mood_tracker.html" class="nav-item"><span class="nav-icon">😊</span> Mood Tracker</a>
+            
+            <!-- Progress & Goals -->
+            <div class="nav-category">Progress & Goals</div>
+            <a href="goal_setter.html" class="nav-item"><span class="nav-icon">🎯</span> Goal Setter</a>
+            <a href="achievements.html" class="nav-item"><span class="nav-icon">🏆</span> Achievements</a>
+            
+            <!-- Social -->
+            <div class="nav-category">Social</div>
+            <a href="collaborative_study_groups.html" class="nav-item"><span class="nav-icon">👥</span> Study Groups</a>
+            <a href="peer_mentorship.html" class="nav-item"><span class="nav-icon">🤝</span> Peer Mentorship</a>
+            
+            <!-- Settings -->
+            <div class="nav-category">Settings</div>
+            <a href="preference.html" class="nav-item"><span class="nav-icon">⚙️</span> Preferences</a>
+            <a href="homepage.html" class="nav-item"><span class="nav-icon">🚪</span> Log Out</a>
+        </div>
+    </div>
+    
+    
+
+    <script>
+        // DOM Elements
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleBtn = document.getElementById('toggleSidebar');
+        const themeToggle = document.getElementById('themeToggle');
+        const overlay = document.getElementById('overlay');
+        const body = document.body;
+        const html = document.documentElement;
+        
+        // Toggle sidebar function
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+            body.classList.toggle('sidebar-active');
+        }
+
+        
+
+        // Event listeners
+        toggleBtn.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+       
+
+        
+
+        // Close sidebar when clicking on a nav item on mobile
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+                    toggleSidebar();
+                }
+            });
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                body.classList.remove('sidebar-active');
+            }
+        });
+    </script>
+</body>
+</html>

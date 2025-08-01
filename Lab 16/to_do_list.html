@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>To-Do List</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      color: #f1f1f1;
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: #8e2de2;
+      text-shadow: 0 0 10px #8e2de2, 0 0 20px #4a00e0;
+      margin-bottom: 30px;
+    }
+
+    input[type="text"] {
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      width: 60%;
+      max-width: 300px;
+      background: #1e1e1e;
+      color: #fff;
+      box-shadow: 0 0 10px #444 inset;
+    }
+
+    button {
+      padding: 10px 18px;
+      margin-left: 10px;
+      background: linear-gradient(to right, #8e2de2, #4a00e0);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 12px #8e2de2;
+      transition: background 0.3s ease, transform 0.2s;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #4a00e0, #8e2de2);
+      transform: scale(1.05);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 30px;
+    }
+
+    li {
+      background-color: #1f1f1f;
+      margin: 10px auto;
+      padding: 10px 20px;
+      width: 90%;
+      max-width: 400px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #4a00e0;
+      transition: background-color 0.3s;
+    }
+
+    li:hover {
+      background-color: #292929;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.3);
+      margin-right: 10px;
+      accent-color: #8e2de2;
+    }
+
+    .completed span {
+      text-decoration: line-through;
+      color: #888;
+      transition: color 0.3s;
+    }
+
+    span {
+      flex: 1;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h2>To-Do List</h2>
+
+  <input type="text" id="taskInput" placeholder="Enter a task" />
+  <button onclick="addTask()">Add Task</button>
+
+  <ul id="taskList"></ul>
+
+  <button onclick="removeCompleted()">Remove Completed</button>
+
+  <script>
+    function addTask() {
+      let taskInput = document.getElementById("taskInput");
+      let taskText = taskInput.value.trim();
+      if (taskText === "") return;
+
+      let li = document.createElement("li");
+      let checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.addEventListener("change", function () {
+        li.classList.toggle("completed", this.checked);
+      });
+
+      let span = document.createElement("span");
+      span.textContent = taskText;
+
+      li.appendChild(checkbox);
+      li.appendChild(span);
+      document.getElementById("taskList").appendChild(li);
+      taskInput.value = "";
+    }
+
+    function removeCompleted() {
+      document.querySelectorAll(".completed").forEach(task => task.remove());
+    }
+  </script>
+</body>
+</html>

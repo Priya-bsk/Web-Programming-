@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyWave - Your Academic Journey Partner</title>
+    <style>
+        :root {
+            --primary: #a8d8ea;
+            --secondary: #aa96da;
+            --accent: #fcbad3;
+            --text: #333;
+            --light-bg: #f9f9f9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .header {
+            background-color: var(--primary);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .button {
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .login {
+            background-color: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--text);
+        }
+
+        .signup {
+            background-color: var(--secondary);
+            color: white;
+            border: 2px solid var(--secondary);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: #5e6c84;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .features {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .feature-card p {
+            color: #666;
+        }
+
+        /*Screen width is 768px or smaller*/
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .footer {
+            background-color: var(--primary);
+            color: var(--text);
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: 4rem;
+        }
+    
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    
+        .footer-nav {
+            margin-top: 0.5rem;
+        }
+    
+        .footer-nav a {
+            color: var(--text);
+            text-decoration: none;
+            margin: 0 1rem;
+            font-weight: 500;
+        }
+    
+        .footer-nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo">StudySync</a>
+            <div class="auth-buttons">
+                <a href="login.html" class="button login">Login</a>
+                <a href="signup.html" class="button signup">Sign Up</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Transform Your Academic Journey</h1>
+        <p>Your personalized companion for academic success, helping you stay organized, motivated, and achieve your educational goals.</p>
+        <a href="signup.html" class="button signup">Get Started - It's Free!</a>
+    </section>
+
+    <section class="features">
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>Academic Progress Tracker</h3>
+            <p>Visualize your academic journey with detailed progress tracking and performance analytics.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>Interactive Vision Board</h3>
+            <p>Create and customize your academic vision board to stay focused on your long-term goals.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">⏲️</div>
+            <h3>Study Session Timer</h3>
+            <p>Stay focused with our Pomodoro technique timer - 25 minutes of work followed by 5-minute breaks.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">📝</div>
+            <h3>Exam & Assignment Tracker</h3>
+            <p>Never miss a deadline with our comprehensive exam and assignment management system.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">👥</div>
+            <h3>Collaborative Study Groups</h3>
+            <p>Join or create study groups to collaborate with peers and share resources.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🧘</div>
+            <h3>Mental Health & Wellbeing</h3>
+            <p>Track your mental health and access resources to maintain a healthy study-life balance.</p>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 StudySync. All Rights Reserved.</p>
+            <nav class="footer-nav">
+                <a href="#">About Us</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </nav>
+        </div>
+    </footer>
+</body>
+</html>

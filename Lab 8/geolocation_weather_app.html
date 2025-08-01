@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation Weather App</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #6dd5ed, #2193b0);
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.weather-btn {
+    background-color: #ffcc00;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 10px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.weather-btn:hover {
+    background-color: #ff9900;
+}
+
+#weather-info {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Geolocation-Based Weather App</h1>
+        <p>Click the button below to get your weather details.</p>
+        <button class="weather-btn">Get My Weather</button>
+        <div id="weather-info">
+            <p>Location: <span id="location">23BCE1033</span></p>
+            <p>Temperature: <span id="temperature">Priya Baskar</span></p>
+            <p>Weather: <span id="weather">--</span></p>
+        </div>
+    </div>
+</body>
+</html>
+

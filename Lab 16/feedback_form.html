@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feedback Form</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    form {
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      width: 100%;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      resize: vertical;
+    }
+
+    textarea {
+      height: 100px;
+    }
+
+    .stars {
+      margin: 15px 0;
+    }
+
+    .stars span {
+      font-size: 30px;
+      cursor: pointer;
+      color: #ccc;
+      transition: color 0.3s ease;
+    }
+
+    .stars span:hover,
+    .stars span.selected {
+      color: gold;
+    }
+
+    #selectedRating {
+      font-weight: bold;
+      color: #444;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    @media (max-width: 480px) {
+      form {
+        padding: 20px;
+      }
+
+      .stars span {
+        font-size: 26px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 10px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <form id="feedbackForm">
+    <h2>Feedback Form</h2>
+    <input type="text" id="name" placeholder="Your Name" required /><br />
+    <input type="email" id="email" placeholder="Your Email" required /><br />
+    <textarea id="feedback" placeholder="Your Feedback" required></textarea><br />
+    
+    <div class="stars" id="starRating">
+      <span data-value="1">★</span>
+      <span data-value="2">★</span>
+      <span data-value="3">★</span>
+      <span data-value="4">★</span>
+      <span data-value="5">★</span>
+    </div>
+    <p>Selected Rating: <span id="selectedRating">0</span></p>
+
+    <button type="submit">Submit Feedback</button>
+  </form>
+
+  <script>
+    let rating = 0;
+    document.querySelectorAll(".stars span").forEach(star => {
+      star.addEventListener("click", function () {
+        rating = this.getAttribute("data-value");
+        document.getElementById("selectedRating").textContent = rating;
+        document.querySelectorAll(".stars span").forEach(s => s.classList.remove("selected"));
+        for (let i = 0; i < rating; i++) {
+          document.querySelectorAll(".stars span")[i].classList.add("selected");
+        }
+      });
+    });
+
+    document.getElementById("feedbackForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const feedback = document.getElementById("feedback").value;
+
+      const feedbackData = { name, email, feedback, rating };
+      localStorage.setItem("feedback", JSON.stringify(feedbackData));
+      alert("Feedback Submitted!");
+      this.reset();
+      document.querySelectorAll(".stars span").forEach(s => s.classList.remove("selected"));
+      document.getElementById("selectedRating").textContent = 0;
+      rating = 0;
+    });
+  </script>
+</body>
+</html>

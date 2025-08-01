@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Typing Effect</title>
+  <style>
+    /* Page Layout */
+    body {
+      background: linear-gradient(to right, #e3f2fd, #fce4ec);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Typing Effect */
+    .typing-effect {
+      font-size: 36px;
+      font-weight: bold;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 4px solid #333;
+      width: 0;
+      animation: typing 2.5s steps(13) 1s forwards, blink 0.7s step-end infinite;
+    }
+
+    @keyframes typing {
+      to {
+        width: 100%;
+      }
+    }
+
+    @keyframes blink {
+      50% {
+        border-color: transparent;
+      }
+    }
+
+    /* Subtext */
+    p {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #555;
+      animation: fadeIn 2s ease-in 3s forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="typing-effect">VIT CHENNAI! Web Programming Lab... Let's Start Learning! YAYYYYY</h1>
+  <p>Priya Baskar | 23BCE1033</p>
+
+</body>
+</html>

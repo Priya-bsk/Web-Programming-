@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Canvas</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            padding: 40px;
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            background-color: #fff;
+            border: 1px solid #333;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h2>Understanding Canvas</h2>
+    <canvas id="myCanvas" width="500" height="500">Your browser does not support the HTML5 canvas tag.</canvas>
+
+    <script>
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // Draw a line
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(200, 100);
+        ctx.stroke();
+
+        // Draw a full circle
+        ctx.beginPath();
+        ctx.arc(100, 250, 40, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        // Draw a semi-circle (filled)
+        ctx.beginPath();
+        ctx.arc(300, 250, 40, 0, Math.PI);
+        ctx.fill();
+
+        // Draw text: filled and stroked
+        ctx.font = "50px Arial";
+        ctx.fillText("Line", 100, 50);
+
+        ctx.strokeText("Circle", 10, 200);
+        ctx.strokeText("Semi-Circle", 200, 200);
+
+        // Linear Gradient Rectangle
+        const linearGrad = ctx.createLinearGradient(0, 0, 200, 0);
+        linearGrad.addColorStop(0, "blue");
+        linearGrad.addColorStop(0.5, "yellow");
+        linearGrad.addColorStop(1, "white");
+
+        ctx.fillStyle = linearGrad;
+        ctx.fillRect(10, 330, 150, 80);
+
+        // Radial Gradient Rectangle
+        const radialGrad = ctx.createRadialGradient(250, 150, 5, 90, 250, 300);
+        radialGrad.addColorStop(0, "blue");
+        radialGrad.addColorStop(0.5, "green");
+        radialGrad.addColorStop(1, "red");
+
+        ctx.fillStyle = radialGrad;
+        ctx.fillRect(250, 330, 150, 80);
+    </script>
+</body>
+</html>

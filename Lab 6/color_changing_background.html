@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Animation Task 2 - Pastel Background</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+      animation: change_background 10s infinite;
+      transition: background-color 2s ease;
+    }
+
+    @keyframes change_background {
+      0%   { background-color: #FFDEE9; }   /* light pink */
+      25%  { background-color: #B5EAD7; }   /* pastel mint */
+      50%  { background-color: #7989c9; }   /* soft lavender */
+      75%  { background-color: #FFF5BA; }   /* pastel yellow */
+      100% { background-color: #FFDEE9; }   /* back to light pink */
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 2.5em;
+    }
+
+    h3 {
+      text-align: center;
+      font-weight: normal;
+    }
+
+    ul {
+      max-width: 600px;
+      margin: 30px auto;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    li {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Color Changing Background</h1>
+  <h3>Task: To create a background that transitions between colors by following the below instructions:</h3> 
+
+  <ul>
+    <li>Apply an animation to the body tag.</li>
+    <li>Use @keyframes to change the background color in 4 steps.</li>
+    <li>Set the animation to infinite with a 10-second duration.</li>
+  </ul>
+  
+</body>
+</html>

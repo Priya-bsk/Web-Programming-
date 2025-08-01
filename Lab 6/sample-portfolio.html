@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 5-Portfolio Projects</title>
+    <style>
+        .body{
+            margin:none;
+        }
+        
+        .portfolio{
+            column-count: 3;
+            column-gap:20px;
+            height:fit-content;
+            width:fit-content;
+            
+        }
+        .project{
+            border-style:solid;
+            margin:15px;
+            border-radius:10px;
+            padding:10px;
+            background-color: rgb(130, 193, 196);
+            box-shadow:10px 10px 10px rgba(0,0,0,0.3);
+        }
+
+        .github{
+            padding-top:10px;
+            padding-bottom:10px;
+            padding-left:30px;
+            padding-right:30px;
+            border-radius:15px;
+            font-weight: bold;
+            background-color: rgba(22, 10, 196,1);
+            color:white;
+            border:none;
+            box-shadow: 10px 10px 10px rgba(22, 10, 196, 0.3);
+        }
+
+        img{
+            width:200px;
+            height:200px;
+        }
+        button {
+      margin: auto;
+      display: block;
+      cursor:pointer;
+    }
+    .project-name{
+        text-align: center;
+    }
+    .made-with{
+        color:rgb(66, 10, 92);
+        font-size:15px;
+
+    }
+    figcaption{
+        text-align: center;
+        color:rgb(13, 41, 117)
+    }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center">Priya Baskar 23BCE1033 Portfolio-Projects</h1>
+    <br>
+    <div class="portfolio">
+        <div class="project">
+            <h2 class="project-name">To-Do List Application</h2>
+            <h4  class="made-with">Made with: JavaScript (React)</h4>
+            <figure>
+                <img src="todo-list.webp">
+                <figcaption>TaskMaster</figcaption>
+            </figure>
+            <p>The To-Do List Application allows users to add, edit, delete, and mark tasks as completed. The app enables simple task management where users can organize their daily activities, set deadlines, and track progress. The tasks can be saved locally in the browser using LocalStorage or through a backend system that stores tasks in a database. The application typically features a clean, minimalist UI with options to categorize tasks (e.g., "Work", "Personal") and sort them based on priority or due date.</p>
+            <button class="github">Github</button>
+        </div>
+        <div class="project">
+            <h2 class="project-name">Quiz App</h2>
+            <h4 class="made-with">Made with: JavaScript (React)</h4>
+            <figure>
+                <img src="quiz.png">
+                <figcaption>Quizify</figcaption>
+            </figure>
+            <p>The Quiz App provides users with multiple-choice questions and allows them to track their score as they answer each question. The app includes features like a countdown timer, score summary, and question categories. It can also provide instant feedback after each question. This project demonstrates front-end development skills and the ability to handle real-time interactions in a simple but engaging way.</p>
+            <button class="github">Github</button>
+        </div>
+        <div class="project">
+            <h2 class="project-name">Telemedicine appointment booking website</h2>
+            <h4 class="made-with">Made with: Wix studio</h4>
+            <figure>
+                <img src="telemedicine.PNG">
+                <figcaption>MediSched</figcaption>
+            </figure>
+            <p>The Telemedicine Appointment Booking Website allows patients to book online appointments with healthcare professionals. The platform offers features such as selecting a doctor by specialty, viewing available time slots, and receiving appointment reminders via email or SMS. Additionally, patients can manage their profiles, view past appointments, and access telemedicine services (e.g., video calls). The backend manages user data, appointment scheduling, and integrates with external calendar systems.</p>
+            <button class="github">Github</button>
+        </div>
+        <div class="project">
+            <h2 class="project-name">Blog Platform</h2>
+            <h4  class="made-with">Made with: Node.js (Express)</h4>
+            <figure>
+                <img src="blog.png">
+                <figcaption>BlogSphere</figcaption>
+            </figure>
+            <p>The Blog Platform allows users to create, read, edit, and delete blog posts. Users can register and log in to manage their own posts. The platform has features such as rich text formatting for blog posts, commenting, and user profiles. It also includes an admin panel for managing users and posts. The system demonstrates full-stack development skills, with a focus on database management, user authentication, and responsive front-end design.</p>
+            <button class="github">Github</button>
+        </div>
+        <div class="project">
+            <h2 class="project-name">Machine Learning Model for Image Classification</h2>
+            <h4  class="made-with">Made with: Python</h4>
+            <figure>
+                <img src="machine-learning.PNG">
+                <figcaption>Visionary Classifier</figcaption>
+            </figure>
+            <p>This project involves developing a machine learning model to classify images into predefined categories (e.g., animals, digits, etc.). The model uses deep learning techniques, specifically Convolutional Neural Networks (CNNs), to process and classify images. After training the model on a labeled dataset, it can predict the class of new images with high accuracy. The project demonstrates proficiency in neural networks, image processing, and model evaluation.</p>
+            <button class="github">Github</button>
+        </div>
+        <div class="project">
+            <h2 class="project-name">Movie Recommendation System</h2>
+            <h4 class="made-with">Made with: Python, Scikit-learn</h4>
+            <figure>
+                <img src="movie.jpeg">
+                <figcaption>CineSuggest</figcaption>
+            </figure>
+            <p>The Movie Recommendation System leverages machine learning algorithms to suggest movies to users based on their preferences and viewing history. It uses collaborative filtering and content-based filtering techniques to recommend movies similar to those the user has already rated highly. Users can input their ratings for movies, and the system will output personalized recommendations. The backend is powered by Python, and the frontend is built using React, providing a smooth user experience. The database stores movie data and user preferences.</p>
+            <button class="github">Github</button>
+        </div>
+        </div>
+</div>
+</body>
+</html>

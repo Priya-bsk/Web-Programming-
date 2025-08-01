@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive SVG</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        svg {
+            width: 50%;
+            height: auto;
+            max-width: 500px;
+        }
+        circle {
+            
+            transition: fill 0.5s;
+        }
+        circle:hover {
+            fill: red;
+        }
+        text {
+            font-size: 12px;
+            text-anchor: middle;
+            fill: white;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        rect {
+            fill: rgba(128, 0, 96, 0.589);
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <h2>Responsive SVG Graphic</h2>
+    <svg viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="#000080" />
+        
+        <circle cx="50" cy="50" r="30" fill="#ADD8E6"></circle>
+        <text x="50" y="55" stroke="black">SVG Circle</text>
+        <rect x="20" y="40" width="60" height="20" />
+    </svg>
+</body>
+</html>

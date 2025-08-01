@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter</title>
+    <style>
+        body{
+            background-color: rgb(237, 165, 228);
+        }
+        
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: rgba(159, 81, 142, 0.564);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color:rgb(101, 2, 104)
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .result {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        #convert-button{
+            margin-top:10px;
+            padding:10px;
+            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(186, 16, 186, 0.457);
+            border-radius: 5px;
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Temperature Converter</h2>
+        <input type="number" id="tempInput" placeholder="Enter temperature" oninput="convertTemperature()">
+        <select id="conversionType" onchange="convertTemperature()">
+            <option value="CtoF">Celsius to Fahrenheit</option>
+            <option value="FtoC">Fahrenheit to Celsius</option>
+        </select>
+        <button type="button" id="convert-button" onclick="convertTemperature()">Convert</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function convertTemperature() {
+            const tempValue = parseFloat(document.getElementById("tempInput").value);
+            const conversionType = document.getElementById("conversionType").value;
+            let result = '';
+
+            if (isNaN(tempValue)) {
+                result = 'Please enter a valid number.';
+            } else {
+                if (conversionType === 'CtoF') {
+                    result = (tempValue * 9 / 5) + 32;
+                    result = `${tempValue}°C = ${result.toFixed(2)}°F`;
+                } else if (conversionType === 'FtoC') {
+                    result = (tempValue - 32) * 5 / 9;
+                    result = `${tempValue}°F = ${result.toFixed(2)}°C`;
+                }
+            }
+            document.getElementById("result").innerText = result;
+        }
+    </script>
+</body>
+</html>

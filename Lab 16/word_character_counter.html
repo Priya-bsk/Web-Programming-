@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word and Character Counter</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        textarea { width: 80%; height: 100px; padding: 10px; font-size: 16px; }
+        .warning { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Word and Character Counter</h2>
+    <textarea id="textInput" placeholder="Type here..." oninput="updateCount()" maxlength="200"></textarea>
+    <p>Characters: <span id="charCount">0</span>/200</p>
+    <p>Words: <span id="wordCount">0</span></p>
+    <p id="warning" class="warning" style="display: none;">Maximum character limit reached!</p>
+    
+    <script>
+        function updateCount() {
+            let textArea = document.getElementById("textInput");
+            let charCount = textArea.value.length;
+            let words = textArea.value.trim().split(/\s+/).filter(word => word.length > 0);
+            
+            document.getElementById("charCount").textContent = charCount;
+            document.getElementById("wordCount").textContent = words.length;
+            
+            if (charCount >= 200) {
+                document.getElementById("warning").style.display = "block";
+                textArea.value = textArea.value.substring(0, 200);
+            } else {
+                document.getElementById("warning").style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

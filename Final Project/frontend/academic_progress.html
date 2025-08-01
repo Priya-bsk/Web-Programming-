@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Progress Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #a86db1;
+            --secondary-color: #ffd1dc;
+            --bg-color: #fef6fb;
+            --card-bg: #fff7fa;
+            --text-color: #333;
+            --chart-bg: #fce2e5;
+            --chart-fill: #ff9a8b;
+            --nav-bg: #a86db1;
+            --nav-text: white;
+            --nav-hover: #8a4b93;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --button-color: #a86db1;
+            --button-hover: #8a4b93;
+            --input-border: #ddd;
+            --input-focus: #a86db1;
+            --success-color: #4caf50;
+            --danger-color: #f44336;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+        
+        
+        
+        /* Top Header */
+        .top-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-color: var(--nav-bg);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1001;
+            box-shadow: 0 2px 5px var(--shadow-color);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--nav-text);
+            margin-left: 50px;
+            transition: margin 0.3s ease-in-out;
+        }
+        
+        .logo-nav-hidden {
+            margin-left: 0;
+        }
+        
+        .top-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        /* Dashboard Content */
+        .dashboard {
+            margin-left: 250px;
+            padding: 80px 20px 20px;
+            transition: margin 0.3s ease-in-out;
+            max-width: 1400px;
+        }
+        
+        .dashboard-full {
+            margin-left: 0;
+        }
+        
+        
+        
+        /* Dashboard Cards */
+        .charts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+            transition: transform 0.3s ease-in-out;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        .card:hover {
+            transform: scale(1.02);
+        }
+        
+        h1, h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        /* Grade Chart */
+        .grade-chart {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 20px;
+            height: 300px;
+            padding-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .bar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+            margin-bottom: 10px;
+        }
+        
+        .bar {
+            width: 40px;
+            background: var(--secondary-color);
+            border-radius: 4px 4px 0 0;
+            transition: height 0.5s ease-in-out;
+            cursor: pointer;
+        }
+        
+        .bar-label {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .grade-value {
+            margin-bottom: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Progress Circles */
+        .progress-circles {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .progress-circle {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 15px;
+        }
+        
+        .progress-circle svg {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-circle-bg {
+            fill: none;
+            stroke: var(--chart-bg);
+            stroke-width: 8;
+        }
+        
+        .progress-circle-value {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease-in-out;
+            stroke: var(--chart-fill);
+        }
+        
+        .progress-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        /* Data Control Panel */
+        .data-control {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        
+        .data-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 120px;
+        }
+        
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            padding: 8px;
+            border: 1px solid var(--input-border);
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--input-focus);
+        }
+        
+        .edit-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--button-hover);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: var(--success-color);
+            opacity: 0.9;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: var(--danger-color);
+            opacity: 0.9;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1002;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 4px 10px var(--shadow-color);
+        }
+        
+        .modal-title {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .close-btn {
+            padding: 8px 15px;
+            background-color: #ddd;
+            color: #333;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .navbar-container {
+                width: 200px;
+            }
+            
+            .dashboard {
+                margin-left: 200px;
+            }
+            
+            .navbar-hidden + .dashboard {
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .navbar-container {
+                width: 100%;
+            }
+            
+            .dashboard {
+                margin-left: 0;
+                padding-top: 70px;
+            }
+            
+            .navbar-hidden {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Added styles for task data form */
+        .task-form-group {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 5px 0;
+            border-bottom: 1px solid var(--input-border);
+        }
+
+        .task-form-group:last-child {
+            border-bottom: none;
+        }
+
+        .task-subject {
+            font-weight: bold;
+            width: 30%;
+        }
+
+        .task-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            width: 70%;
+        }
+
+        .task-inputs input {
+            width: 50px;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid var(--input-border);
+            border-radius: 4px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .task-inputs span {
+            margin: 0 5px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid var(--input-border);
+            border-bottom: none;
+            border-radius: 5px 5px 0 0;
+            background-color: var(--bg-color);
+        }
+
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 15px;
+            border: 1px solid var(--input-border);
+            border-radius: 0 0 5px 5px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Add Subject Form */
+        .add-subject-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+            padding: 15px;
+            border-top: 1px solid var(--input-border);
+        }
+
+        .add-subject-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .add-subject-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .subject-delete-btn {
+            color: var(--danger-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 5px;
+            margin-left: 5px;
+        }
+
+        .subject-delete-btn:hover {
+            opacity: 0.8;
+        }
+
+        .notification {
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            animation: fadeIn 0.3s;
+        }
+
+        .notification-success {
+            background-color: rgba(76, 175, 80, 0.2);
+            border-left: 4px solid var(--success-color);
+        }
+
+        .notification-error {
+            background-color: rgba(244, 67, 54, 0.2);
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .notification-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        #notificationArea {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            width: 300px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-container"></div>
+<script src="include-nav.js"></script>
+
+    <!-- Notification Area -->
+    <div id="notificationArea"></div>
+
+    <!-- Main Dashboard Content -->
+    <div class="dashboard" id="dashboard">
+        <h1>Academic Progress Dashboard</h1>
+        
+        <div class="charts">
+            <div class="card">
+                <h2>Subject progress</h2>
+                <div class="grade-chart" id="gradeChart"></div>
+            </div>
+
+            <div class="card">
+                <h2>Task Completion</h2>
+                <div class="progress-circles" id="progressCircles"></div>
+            </div>
+        </div>
+
+        <!-- Data Control Panel -->
+        <div class="data-control">
+            <h2>Update Your Academic Data</h2>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="grades">Subject progress</div>
+                <div class="tab" data-tab="tasks">Tasks</div>
+                <div class="tab" data-tab="add-subject">Add Subject</div>
+            </div>
+            
+            <div class="tab-content active" id="grades-tab">
+                <form id="gradeForm" class="data-form">
+                    <!-- Will be populated dynamically -->
+                </form>
+            </div>
+            
+            <div class="tab-content" id="tasks-tab">
+                <form id="taskForm" class="data-form">
+                    <!-- Will be populated dynamically -->
+                </form>
+            </div>
+            
+            <div class="tab-content" id="add-subject-tab">
+                <div class="add-subject-title">Add New Subject</div>
+                <form id="addSubjectForm" class="add-subject-form">
+                    <div class="add-subject-row">
+                        <div class="form-group">
+                            <label for="newSubjectName">Subject Name</label>
+                            <input type="text" id="newSubjectName" required placeholder="e.g. Biology">
+                        </div>
+                        <div class="form-group">
+                            <label for="newSubjectGrade">Initial Grade (%)</label>
+                            <input type="number" id="newSubjectGrade" min="0" max="100" required value="80">
+                        </div>
+                    </div>
+                    <div class="add-subject-row">
+                        <div class="form-group">
+                            <label for="newSubjectTasksCompleted">Tasks Completed</label>
+                            <input type="number" id="newSubjectTasksCompleted" min="0" required value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="newSubjectTasksTotal">Total Tasks</label>
+                            <input type="number" id="newSubjectTasksTotal" min="1" required value="10">
+                        </div>
+                        <button type="submit" class="btn btn-success">Add Subject</button>
+                    </div>
+                </form>
+
+                <div class="add-subject-title" style="margin-top: 30px;">Manage Subjects</div>
+                <div id="subjectsList">
+                    <!-- Will be populated dynamically -->
+                </div>
+            </div>
+            
+            <div class="edit-buttons">
+                <button type="button" id="updateBtn" class="btn">Update Charts</button>
+                <button type="button" id="resetBtn" class="btn">Reset to Default</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h3 class="modal-title">Edit Grade</h3>
+            <form id="editForm" class="modal-form">
+                <div class="form-group">
+                    <label for="editGrade">Grade (%)</label>
+                    <input type="number" id="editGrade" min="0" max="100" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" id="cancelEdit" class="close-btn">Cancel</button>
+                    <button type="submit" class="btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+        
+    <script>
+        // Sample data
+        let gradeData = [
+            { subject: 'Math', grade: 85 },
+            { subject: 'DAA', grade: 88 },
+            { subject: 'Cloud', grade: 92 },
+            { subject: 'Java', grade: 87 },
+            { subject: 'DBMS', grade: 95 },
+            
+        ];
+
+        let taskData = [
+            { subject: 'Math', completed: 28, total: 30 },
+            { subject: 'DAA', completed: 27, total:  30 },
+            { subject: 'Cloud', completed: 12, total: 20 },
+            { subject: 'Java', completed: 25, total: 25 },
+            { subject: 'DBMS', completed: 25, total: 30 },
+            
+           
+        ];
+
+        // Keep original data for reset functionality
+        const originalGradeData = JSON.parse(JSON.stringify(gradeData));
+        const originalTaskData = JSON.parse(JSON.stringify(taskData));
+
+        // Initialize Grade Chart
+        function initGradeChart() {
+            const chart = document.getElementById('gradeChart');
+            chart.innerHTML = '';
+            const maxGrade = 100;
+            
+            gradeData.forEach((data, index) => {
+                const barContainer = document.createElement('div');
+                barContainer.className = 'bar-container';
+                barContainer.dataset.index = index;
+
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = '0px';
+                bar.dataset.index = index;
+                bar.addEventListener('click', function() {
+                    openEditModal(index);
+                });
+
+                setTimeout(() => {
+                    bar.style.height = `${(data.grade / maxGrade) * 260}px`;
+                }, 200);
+
+                const value = document.createElement('div');
+                value.className = 'grade-value';
+                value.textContent = `${data.grade}%`;
+                value.dataset.index = index;
+                value.addEventListener('click', function() {
+                    openEditModal(index);
+                });
+
+                const label = document.createElement('div');
+                label.className = 'bar-label';
+                label.textContent = data.subject;
+
+                barContainer.appendChild(value);
+                barContainer.appendChild(bar);
+                barContainer.appendChild(label);
+                chart.appendChild(barContainer);
+            });
+        }
+
+        // Initialize Progress Circles
+        function initProgressCircles() {
+            const container = document.getElementById('progressCircles');
+            container.innerHTML = '';
+
+            taskData.forEach(data => {
+                const percentage = (data.completed / data.total) * 100;
+                const circle = document.createElement('div');
+                circle.className = 'progress-circle';
+
+                const circumference = 2 * Math.PI * 54;
+
+                circle.innerHTML = `
+                    <svg width="120" height="120">
+                        <circle class="progress-circle-bg" cx="60" cy="60" r="54"/>
+                        <circle class="progress-circle-value" cx="60" cy="60" r="54"
+                            stroke-dasharray="${circumference}"
+                            stroke-dashoffset="${circumference}"
+                        />
+                    </svg>
+                    <div class="progress-label">${data.subject}<br>${Math.round(percentage)}%<br>${data.completed}/${data.total}</div>
+                `;
+
+                container.appendChild(circle);
+
+                setTimeout(() => {
+                    circle.querySelector('.progress-circle-value').style.strokeDashoffset = `${circumference * (1 - percentage / 100)}`;
+                }, 200);
+            });
+        }
+
+        // Initialize Grade Form
+        function initGradeForm() {
+            const form = document.getElementById('gradeForm');
+            form.innerHTML = '';
+            
+            gradeData.forEach((data, index) => {
+                const formGroup = document.createElement('div');
+                formGroup.className = 'form-group';
+                
+                const label = document.createElement('label');
+                label.textContent = data.subject;
+                label.htmlFor = `grade-${index}`;
+                
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.id = `grade-${index}`;
+                input.name = `grade-${index}`;
+                input.min = 0;
+                input.max = 100;
+                input.value = data.grade;
+                input.required = true;
+                
+                formGroup.appendChild(label);
+                formGroup.appendChild(input);
+                form.appendChild(formGroup);
+            });
+        }
+
+        // Initialize Task Form
+        function initTaskForm() {
+            const form = document.getElementById('taskForm');
+            form.innerHTML = '';
+            
+            taskData.forEach((data, index) => {
+                const formGroup = document.createElement('div');
+                formGroup.className = 'task-form-group';
+                
+                const subject = document.createElement('div');
+                subject.className = 'task-subject';
+                subject.textContent = data.subject;
+                
+                const inputs = document.createElement('div');
+                inputs.className = 'task-inputs';
+                
+                const completedInput = document.createElement('input');
+                completedInput.type = 'number';
+                completedInput.id = `completed-${index}`;
+                completedInput.name = `completed-${index}`;
+                completedInput.min = 0;
+                completedInput.max = data.total;
+                completedInput.value = data.completed;
+                completedInput.required = true;
+                
+                const divider = document.createElement('span');
+                divider.textContent = ' / ';
+                
+                const totalInput = document.createElement('input');
+                totalInput.type = 'number';
+                totalInput.id = `total-${index}`;
+                totalInput.name = `total-${index}`;
+                totalInput.min = 1;
+                totalInput.value = data.total;
+                totalInput.required = true;
+                
+                inputs.appendChild(completedInput);
+                inputs.appendChild(divider);
+                inputs.appendChild(totalInput);
+                
+                formGroup.appendChild(subject);
+                formGroup.appendChild(inputs);
+                form.appendChild(formGroup);
+            });
+        }
+
+        // Initialize Subject List
+        function initSubjectsList() {
+            const list = document.getElementById('subjectsList');
+            list.innerHTML = '';
+            
+            if (gradeData.length === 0) {
+                list.innerHTML = '<p>No subjects available</p>';
+                return;
+            }
+            
+            gradeData.forEach((data, index) => {
+                const formGroup = document.createElement('div');
+                formGroup.className = 'task-form-group';
+                
+                const subject = document.createElement('div');
+                subject.className = 'task-subject';
+                subject.textContent = data.subject;
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'subject-delete-btn';
+                deleteBtn.innerHTML = '&times;';
+                deleteBtn.title = 'Delete subject';
+                deleteBtn.type = 'button'; // Added to prevent form submission
+                deleteBtn.dataset.index = index;
+                deleteBtn.addEventListener('click', function() {
+                    deleteSubject(this.dataset.index);
+                });
+                
+                formGroup.appendChild(subject);
+                formGroup.appendChild(deleteBtn);
+                list.appendChild(formGroup);
+            });
+        }
+
+        // Update Grade Data from Form
+        function updateGradeData() {
+            gradeData.forEach((data, index) => {
+                const input = document.getElementById(`grade-${index}`);
+                if (input) {
+                    data.grade = parseInt(input.value) || 0;
+                }
+            });
+            
+            initGradeChart();
+        }
+
+        // Update Task Data from Form
+        function updateTaskData() {
+            taskData.forEach((data, index) => {
+                const completedInput = document.getElementById(`completed-${index}`);
+                const totalInput = document.getElementById(`total-${index}`);
+                
+                if (completedInput && totalInput) {
+                    const total = parseInt(totalInput.value) || 1;
+                    let completed = parseInt(completedInput.value) || 0;
+                    
+                    // Ensure completed doesn't exceed total
+                    if (completed > total) {
+                        completed = total;
+                        completedInput.value = total;
+                    }
+                    
+                    data.completed = completed;
+                    data.total = total;
+                }
+            });
+            
+            initProgressCircles();
+        }
+
+        // Reset to original data
+        function resetData() {
+            gradeData = JSON.parse(JSON.stringify(originalGradeData));
+            taskData = JSON.parse(JSON.stringify(originalTaskData));
+            
+            initGradeForm();
+            initTaskForm();
+            initSubjectsList();
+            initGradeChart();
+            initProgressCircles();
+            
+            showNotification('Data reset to default values', 'success');
+        }
+
+        // Add subject function
+        function addSubject(event) {
+            event.preventDefault();
+            
+            const subjectName = document.getElementById('newSubjectName').value.trim();
+            const grade = parseInt(document.getElementById('newSubjectGrade').value) || 0;
+            const completed = parseInt(document.getElementById('newSubjectTasksCompleted').value) || 0;
+            const total = parseInt(document.getElementById('newSubjectTasksTotal').value) || 10;
+            
+            // Validate
+            if (!subjectName) {
+                showNotification('Please enter a subject name', 'error');
+                return;
+            }
+            
+            // Check if subject already exists
+            if (gradeData.some(item => item.subject.toLowerCase() === subjectName.toLowerCase())) {
+                showNotification('Subject already exists', 'error');
+                return;
+            }
+            
+            // Add to data
+            // Add to data
+            gradeData.push({ subject: subjectName, grade: grade });
+            taskData.push({ subject: subjectName, completed: completed, total: total });
+            
+            // Reset form
+            document.getElementById('newSubjectName').value = '';
+            document.getElementById('newSubjectGrade').value = 80;
+            document.getElementById('newSubjectTasksCompleted').value = 0;
+            document.getElementById('newSubjectTasksTotal').value = 10;
+            
+            // Update UI
+            initGradeForm();
+            initTaskForm();
+            initSubjectsList();
+            initGradeChart();
+            initProgressCircles();
+            
+            showNotification(`Subject "${subjectName}" added successfully`, 'success');
+        }
+
+        // Delete subject function
+        function deleteSubject(index) {
+            const subject = gradeData[index].subject;
+            
+            // Remove from arrays
+            gradeData.splice(index, 1);
+            taskData.splice(index, 1);
+            
+            // Update UI
+            initGradeForm();
+            initTaskForm();
+            initSubjectsList();
+            initGradeChart();
+            initProgressCircles();
+            
+            showNotification(`Subject "${subject}" deleted successfully`, 'success');
+        }
+
+        // Open edit modal
+        function openEditModal(index) {
+            const modal = document.getElementById('editModal');
+            const gradeInput = document.getElementById('editGrade');
+            
+            gradeInput.value = gradeData[index].grade;
+            gradeInput.dataset.index = index;
+            
+            modal.style.display = 'flex';
+        }
+
+        // Close edit modal
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        // Save edited grade
+        function saveEditedGrade(event) {
+            event.preventDefault();
+            
+            const gradeInput = document.getElementById('editGrade');
+            const index = gradeInput.dataset.index;
+            const newGrade = parseInt(gradeInput.value) || 0;
+            
+            gradeData[index].grade = newGrade;
+            
+            initGradeChart();
+            initGradeForm();
+            closeEditModal();
+            
+            showNotification(`Grade for ${gradeData[index].subject} updated to ${newGrade}%`, 'success');
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            const notificationArea = document.getElementById('notificationArea');
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            
+            notification.innerHTML = `
+                ${message}
+                <button class="notification-close">&times;</button>
+            `;
+            
+            notification.querySelector('.notification-close').addEventListener('click', function() {
+                notification.remove();
+            });
+            
+            notificationArea.appendChild(notification);
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        // Tab switching functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Hide all tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Show corresponding tab content
+                const tabId = this.dataset.tab;
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            initGradeChart();
+            initProgressCircles();
+            initGradeForm();
+            initTaskForm();
+            initSubjectsList();
+            
+            document.getElementById('updateBtn').addEventListener('click', function() {
+                updateGradeData();
+                updateTaskData();
+                showNotification('Charts updated successfully', 'success');
+            });
+            
+            document.getElementById('resetBtn').addEventListener('click', resetData);
+            
+            document.getElementById('addSubjectForm').addEventListener('submit', addSubject);
+            
+            document.getElementById('editForm').addEventListener('submit', saveEditedGrade);
+            document.getElementById('cancelEdit').addEventListener('click', closeEditModal);
+            
+            
+            
+        });
+    </script>
+</body>
+</html>

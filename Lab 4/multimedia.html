@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <h1>Multimedia</h1>
+        <h2>Video</h2>
+        <video width="300" height="260" controls>
+            <source src="video.mp4" type="video/mp4">
+            <source src="video.ogg" type="video/ogg">
+            Your browser does not support the video tag
+        </video>
+        <h2>Video with autoplay muted</h2>
+        <video width="300" height="260" autoplay muted>
+            <source src="cat.mp4" type="video/mp4">
+            <source src="cat.ogg" type="video/ogg">
+            Your browser does not support the video tag
+        </video>
+        <h2>Audio</h2>
+        <audio controls>
+            <source src="dog.ogg" type="audio/ogg">
+            <source src="dog.mp3" type="audio/mp3">
+            Your browser does not support audio 
+        </audio>
+        <h2>Audio muted</h2>
+        <audio controls autoplay muted>
+            <source src="dog.ogg" type="audio/ogg">
+            <source src="dog.mp3" type="audio/mp3">
+            Your browser does not support audio 
+        </audio>
+        <h2>Geolocation</h2>
+        <p>Click the button to get your coordinates</p>
+        <button onclick="getLocation()">Try it</button>
+        <p id="demo"></p>
+        <script>
+            var x=document.getElementById("demo");
+            function getLocation()
+            {
+                if(navigator.geolocation)
+            {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            }
+            else{
+                x.innerHTML="Geolocation is not support by this browser";
+            }
+            }
+
+            function showPosition(position)
+            {
+                x.innerHTML="Latitude: "+position.coords.latitude+"<br>Longitude: "+position.coords.longitude;
+            }
+        </script>
+
+        <h2>iFrame</h2>
+        <h3>Wikipedia</h3>
+        <iframe src="https://www.wikipedia.org/" height="100" width="400" style="border:5px solid purple" name="iframe_wiki"></iframe>
+        <p><a href="https://www.wikipedia.org/" target="iframe_wiki">Wikipedia</p>
+
+        <h2>iFrame</h2>
+        <h2>Center aligned</h2>
+        <center>
+        <h3>Wikipedia</h3>
+        <iframe src="https://www.wikipedia.org/" height="100" width="400" style="border:5px solid purple" name="iframe_wiki"></iframe>
+        <p><a href="https://www.wikipedia.org/" target="iframe_wiki">Wikipedia</p>
+        </center>
+        
+        
+    </body>
+</html>

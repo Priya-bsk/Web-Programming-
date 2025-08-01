@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dynamic List Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      background: radial-gradient(circle, #1e0034, #000000);
+      color: #fff;
+    }
+
+    #container {
+      background: rgba(28, 0, 50, 0.8);
+      padding: 30px;
+      margin: 60px auto;
+      max-width: 450px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #bb00ff88;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #bb00ff;
+      text-shadow: 0 0 10px #bb00ff, 0 0 20px #bb00ff66;
+    }
+
+    p {
+      font-weight: 600;
+      color: #8ecfff;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-size: 16px;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      width: 70%;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      background: #0d0d0d;
+      color: #fff;
+      box-shadow: 0 0 10px #6600ff77;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      background: #6a00ff;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 12px #a822a8;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #9c00ff;
+      box-shadow: 0 0 18px #a822a8aa;
+    }
+
+    ol {
+      list-style-type: decimal;
+      padding-left: 0;
+      margin-top: 25px;
+    }
+
+    ol li {
+      margin: 12px 0;
+      padding: 10px;
+      border-radius: 8px;
+      background: #260052;
+      color: #e0e0ff;
+      box-shadow: 0 0 8px #a822a8aa;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="container">
+    <h1>Dynamic List Generator</h1>
+    <p>Priya Baskar • 23BCE1033</p>
+    <label for="numItems">Enter the number of list items:</label>
+    <input type="number" id="numItems" placeholder="Enter a number" min="1" />
+    <br/>
+    <button id="generateList">Generate List</button>
+    <ol id="dynamicList"></ol>
+  </div>
+
+  <script>
+    const generateButton = document.getElementById("generateList");
+    const dynamicList = document.getElementById("dynamicList");
+
+    generateButton.addEventListener("click", function () {
+      const numItems = document.getElementById("numItems").value;
+      dynamicList.innerHTML = "";
+
+      if (numItems && numItems > 0) {
+        for (let i = 1; i <= numItems; i++) {
+          const li = document.createElement("li");
+          li.textContent = `Item ${i}`;
+          dynamicList.appendChild(li);
+        }
+      } else {
+        alert("Please enter a valid number greater than 0!");
+      }
+    });
+  </script>
+
+</body>
+</html>

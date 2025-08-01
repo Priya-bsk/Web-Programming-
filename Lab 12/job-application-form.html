@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            font-size: 14px;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        button {
+            background-color: #0d155f;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #4565a0;
+        }
+        
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+        input.error, select.error, textarea.error {
+            border: 2px solid red;
+        }
+        
+        #successMessage {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Job Application Form</h1>
+        <form id="jobApplicationForm" onsubmit="return validateForm(event)">
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Priya Baskar">
+                <div class="error" id="fullNameError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="priya23BCE1033@gmail.com" required>
+                <div class="error" id="emailError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" placeholder="+91 9876543210" required>
+                <div class="error" id="phoneError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="position">Position Applied For:</label>
+                <select id="position" name="position" required>
+                    <option value="">Select a Position</option>
+                    <option value="developer">Developer</option>
+                    <option value="designer">Designer</option>
+                    <option value="manager">Manager</option>
+                    <option value="qa">QA Engineer</option>
+                </select>
+                <div class="error" id="positionError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="resume">Resume Upload (PDF or DOCX):</label>
+                <input type="file" id="resume" name="resume" accept=".pdf, .docx" required>
+                <div class="error" id="resumeError"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="coverLetter">Cover Letter:</label>
+                <textarea id="coverLetter" name="coverLetter" rows="5" required></textarea>
+                <div class="error" id="coverLetterError"></div>
+            </div>
+
+            <button type="submit">Submit Application</button>
+            <div id="successMessage"></div>
+        </form>
+    </div>
+
+    <script src="job_application_form.js">
+        
+        
+    </script>
+</body>
+</html>

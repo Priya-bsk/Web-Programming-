@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Text Color</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        p {
+            font-size: 20px;
+            color: black;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #1d425a;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <p id="text">Sample text. Priya Baskar 23BCE1033. Click the button to change my color!</p>
+    <button onclick="changeColor()">Change Text Color</button>
+
+    <script>
+        function getRandomColor() {
+            return '#' + Math.floor(Math.random()*16777215).toString(16);
+        }
+
+        function changeColor() {
+            document.getElementById("text").style.color = getRandomColor();
+        }
+    </script>
+</body>
+</html>

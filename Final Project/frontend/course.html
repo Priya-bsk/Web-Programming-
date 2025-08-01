@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Courses</title>
+    <style>
+        :root {
+            --primary: #FFB5B5;
+            --secondary: #B5D8FF;
+            --accent: #B5FFD9;
+            --background: #FFF5F5;
+            --text: #4A4A4A;
+            /* Light mode variables from sidebar */
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #6c757d;
+            --accent-color: #9dc5bb;
+            --hover-color: #f1d3d3;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --category-bg: #f0f4f9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Course Page Specific Styles */
+        .course-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            padding: 0 1rem;
+            width: 100%;
+        }
+
+        .semester-summary {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            padding: 0.8rem 1.5rem;
+            background-color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tab.active {
+            background-color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .course-card-header {
+            padding: 1rem;
+            color: var(--text);
+        }
+
+        .current-course .course-card-header {
+            background-color: var(--primary);
+        }
+
+        .completed-course .course-card-header {
+            background-color: var(--accent);
+        }
+
+        .course-content {
+            padding: 1rem;
+        }
+
+        .course-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .detail-item {
+            background-color: var(--background);
+            padding: 0.8rem;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .grade {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-top: 0.5rem;
+        }
+
+        .add-course-btn {
+            display: block;
+            margin: 1rem auto;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: white;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+        
+        .close-btn, .save-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .close-btn {
+            background-color: #ddd;
+        }
+        
+        .save-btn {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Main Content Area (adjusted to work with sidebar) */
+        .main-content {
+            flex-grow: 1;
+            margin-left: 250px;
+            padding: 20px;
+            transition: margin 0.3s ease;
+            min-height: 100vh;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-container"></div>
+<script src="include-nav.js"></script>
+    <!-- This is the actual course content area -->
+    <div class="main-content">
+        <div class="container">
+            <div class="course-header">
+                <div class="course-title">My Courses</div>
+            </div>
+            
+            <section class="semester-summary">
+                <div class="summary-item">
+                    <div class="summary-value">4</div>
+                    <div>Current Courses</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">8</div>
+                    <div>Completed Courses</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-value">36</div>
+                    <div>Total Credits</div>
+                </div>
+            </section>
+
+            <div class="tabs">
+                <button class="tab active" data-tab="current">Current Courses</button>
+                <button class="tab" data-tab="completed">Completed Courses</button>
+            </div>
+
+            <div class="courses-grid" id="coursesGrid">
+                <!-- Courses will be dynamically added here -->
+            </div>
+
+            <button class="add-course-btn" id="addCourseBtn">Add Course</button>
+        </div>
+    </div>
+
+    <!-- Add course modal -->
+    <div class="modal" id="addCourseModal">
+        <div class="modal-content">
+            <h2>Add New Course</h2>
+            <form id="addCourseForm">
+                <div class="form-group">
+                    <label for="courseTitle">Course Title</label>
+                    <input type="text" id="courseTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="courseCode">Course Code</label>
+                    <input type="text" id="courseCode" required>
+                </div>
+                <div class="form-group">
+                    <label for="courseCredits">Credits</label>
+                    <input type="number" id="courseCredits" min="1" max="5" required>
+                </div>
+                <div class="form-group">
+                    <label for="courseProfessor">Professor</label>
+                    <input type="text" id="courseProfessor" required>
+                </div>
+                <div class="form-group">
+                    <label for="courseType">Course Type</label>
+                    <select id="courseType" required>
+                        <option value="current">Current Course</option>
+                        <option value="completed">Completed Course</option>
+                    </select>
+                </div>
+                <div class="form-group" id="targetGradeGroup">
+                    <label for="targetGrade">Target Grade</label>
+                    <select id="targetGrade">
+                        <option value="S">S</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+                <div class="form-group" id="actualGradeGroup" style="display: none;">
+                    <label for="actualGrade">Grade</label>
+                    <select id="actualGrade">
+                        <option value="S">S</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="F">F</option>
+                    </select>
+                </div>
+                <div class="form-group" id="attendanceGroup">
+                    <label for="attendance">Attendance</label>
+                    <input type="text" id="attendance" placeholder="e.g., 95%">
+                </div>
+                <div class="form-group" id="assignmentsGroup">
+                    <label for="assignments">Assignments</label>
+                    <input type="text" id="assignments" placeholder="e.g., 8/10">
+                </div>
+                <div class="form-group" id="semesterGroup" style="display: none;">
+                    <label for="semester">Semester</label>
+                    <input type="text" id="semester" placeholder="e.g., Fall 2024-2025">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="close-btn" id="closeModalBtn">Cancel</button>
+                    <button type="submit" class="save-btn">Save Course</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const courses = {
+            current: [
+                {
+                    title: "Web Programming",
+                    code: "BCSE203",
+                    target_grade: "S",
+                    credits: 3,
+                    professor: "Dr. PQR",
+                    assignments: "12/15",
+                    attendance: "100%"
+                },
+                {
+                    title: "Design and Analysis of Algorithms",
+                    code: "BCSE204",
+                    target_grade: "S",
+                    credits: 4,
+                    professor: "Dr. LMN",
+                    assignments: "8/12",
+                    attendance: "85%"
+                },
+                {
+                    title: "Database Management Systems",
+                    code: "BCSE301",
+                    target_grade: "A",
+                    credits: 4,
+                    professor: "Dr. DEF",
+                    assignments: "5/8",
+                    attendance: "92%"
+                },
+                {
+                    title: "Operating Systems",
+                    code: "BCSE305",
+                    target_grade: "S",
+                    credits: 3,
+                    professor: "Dr. GHI",
+                    assignments: "7/10",
+                    attendance: "95%"
+                }
+            ],
+            completed: [
+                {
+                    title: "Computer Programming: Java",
+                    code: "BCSE103E",
+                    grade: "S",
+                    credits: 3,
+                    professor: "Dr. ABC",
+                    semester: "Fall 2024-2025",
+                    attendance: "93%"
+                },
+                {
+                    title: "Data Structures and Algorithms",
+                    code: "BCSE202",
+                    grade: "A",
+                    credits: 3,
+                    professor: "Dr. XYZ",
+                    semester: "Fall 2024-2025",
+                    attendance: "98%"
+                },
+                {
+                    title: "Computer Architecture",
+                    code: "BCSE201",
+                    grade: "A",
+                    credits: 4,
+                    professor: "Dr. JKL",
+                    semester: "Spring 2023-2024",
+                    attendance: "91%"
+                },
+                {
+                    title: "Discrete Mathematics",
+                    code: "BCSE104",
+                    grade: "B",
+                    credits: 3,
+                    professor: "Dr. MNO",
+                    semester: "Spring 2023-2024",
+                    attendance: "89%"
+                },
+                {
+                    title: "Programming Fundamentals",
+                    code: "BCSE101",
+                    grade: "S",
+                    credits: 4,
+                    professor: "Dr. STU",
+                    semester: "Fall 2023-2024",
+                    attendance: "97%"
+                },
+                {
+                    title: "Digital Logic Design",
+                    code: "BCSE102",
+                    grade: "A",
+                    credits: 3,
+                    professor: "Dr. VWX",
+                    semester: "Fall 2023-2024",
+                    attendance: "94%"
+                },
+                {
+                    title: "Linear Algebra",
+                    code: "BCSE105",
+                    grade: "B",
+                    credits: 3,
+                    professor: "Dr. RST",
+                    semester: "Spring 2023-2024",
+                    attendance: "87%"
+                },
+                {
+                    title: "Object-Oriented Programming",
+                    code: "BCSE106",
+                    grade: "A",
+                    credits: 3,
+                    professor: "Dr. UVW",
+                    semester: "Spring 2023-2024",
+                    attendance: "95%"
+                }
+            ]
+        };
+
+        function createCourseCard(course, type) {
+            return `
+                <div class="course-card ${type}-course">
+                    <div class="course-card-header">
+                        <h2>${course.title}</h2>
+                        <div>${course.code}</div>
+                    </div>
+                    <div class="course-content">
+                        <div class="course-details">
+                            <div class="detail-item">
+                                <div>${type === 'current' ? 'Target grade' : 'Grade'}</div>
+                                <div class="grade">${type === 'current' ? course.target_grade : course.grade}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div>Credits</div>
+                                <div>${course.credits}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div>Professor</div>
+                                <div>${course.professor}</div>
+                            </div>
+                            <div class="detail-item">
+                                <div>${type === 'current' ? 'Attendance' : 'Semester'}</div>
+                                <div>${type === 'current' ? course.attendance : course.semester}</div>
+                            </div>
+                            ${type === 'current' ? `
+                            <div class="detail-item">
+                                <div>Assignments</div>
+                                <div>${course.assignments}</div>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderCourses(type) {
+            const coursesGrid = document.getElementById('coursesGrid');
+            coursesGrid.innerHTML = courses[type].map(course => createCourseCard(course, type)).join('');
+        }
+
+        // Tab functionality
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                renderCourses(tab.dataset.tab);
+            });
+        });
+        
+        // Add course modal functionality
+        const modal = document.getElementById('addCourseModal');
+        const addCourseBtn = document.getElementById('addCourseBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const addCourseForm = document.getElementById('addCourseForm');
+        const courseTypeSelect = document.getElementById('courseType');
+        
+        // Show/hide appropriate form fields based on course type
+        courseTypeSelect.addEventListener('change', function() {
+            const courseType = this.value;
+            if (courseType === 'current') {
+                document.getElementById('targetGradeGroup').style.display = 'block';
+                document.getElementById('actualGradeGroup').style.display = 'none';
+                document.getElementById('attendanceGroup').style.display = 'block';
+                document.getElementById('assignmentsGroup').style.display = 'block';
+                document.getElementById('semesterGroup').style.display = 'none';
+            } else {
+                document.getElementById('targetGradeGroup').style.display = 'none';
+                document.getElementById('actualGradeGroup').style.display = 'block';
+                document.getElementById('attendanceGroup').style.display = 'block';
+                document.getElementById('assignmentsGroup').style.display = 'none';
+                document.getElementById('semesterGroup').style.display = 'block';
+            }
+        });
+        
+        // Open modal
+        addCourseBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+        
+        // Close modal
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            addCourseForm.reset();
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                addCourseForm.reset();
+            }
+        });
+        
+        // Form submission
+        addCourseForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const courseType = document.getElementById('courseType').value;
+            const newCourse = {
+                title: document.getElementById('courseTitle').value,
+                code: document.getElementById('courseCode').value,
+                credits: parseInt(document.getElementById('courseCredits').value),
+                professor: document.getElementById('courseProfessor').value
+            };
+            
+            if (courseType === 'current') {
+                newCourse.target_grade = document.getElementById('targetGrade').value;
+                newCourse.attendance = document.getElementById('attendance').value;
+                newCourse.assignments = document.getElementById('assignments').value;
+            } else {
+                newCourse.grade = document.getElementById('actualGrade').value;
+                newCourse.attendance = document.getElementById('attendance').value;
+                newCourse.semester = document.getElementById('semester').value;
+            }
+            
+            courses[courseType].push(newCourse);
+            
+            // Re-render the current tab
+            const activeTab = document.querySelector('.tab.active').dataset.tab;
+            if (activeTab === courseType) {
+                renderCourses(courseType);
+            }
+            
+            // Update summary numbers
+            document.querySelectorAll('.summary-item .summary-value')[0].textContent = courses.current.length;
+            document.querySelectorAll('.summary-item .summary-value')[1].textContent = courses.completed.length;
+            
+            // Calculate total credits
+            const totalCredits = [...courses.current, ...courses.completed].reduce((sum, course) => sum + course.credits, 0);
+            document.querySelectorAll('.summary-item .summary-value')[2].textContent = totalCredits;
+            
+            // Close modal and reset form
+            modal.style.display = 'none';
+            addCourseForm.reset();
+        });
+
+        // Initial render
+        renderCourses('current');
+        
+        // Make sure summary values are correct on load
+        document.querySelectorAll('.summary-item .summary-value')[0].textContent = courses.current.length;
+        document.querySelectorAll('.summary-item .summary-value')[1].textContent = courses.completed.length;
+        const totalCredits = [...courses.current, ...courses.completed].reduce((sum, course) => sum + course.credits, 0);
+        document.querySelectorAll('.summary-item .summary-value')[2].textContent = totalCredits;
+        
+        // Mark the current page as active in the sidebar if it exists
+        document.addEventListener('DOMContentLoaded', function() {
+            // This will run after the sidebar is loaded
+            const sidebarLinks = document.querySelectorAll('.nav-item');
+            if (sidebarLinks) {
+                sidebarLinks.forEach(link => {
+                    if (link.getAttribute('href') === 'course.html') {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

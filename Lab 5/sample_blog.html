@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive Blog Post</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #eef2f3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .blog-post {
+      padding: 20px;
+      margin: 20px;
+      width: 320px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      animation: fadeIn 1s ease;
+    }
+
+    .blog-post h2 {
+      margin-bottom: 10px;
+    }
+
+    .blog-post p {
+      color: #333;
+    }
+
+    .read-more, .like-button {
+      display: inline-block;
+      margin: 10px 5px 0;
+      padding: 10px 20px;
+      color: #fff;
+      background-color: #007BFF;
+      text-decoration: none;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .read-more:hover, .like-button:hover {
+      background-color: #0056b3;
+    }
+
+    .extra-content {
+      display: none;
+      margin-top: 15px;
+      color: #555;
+    }
+
+    .timestamp {
+      font-size: 0.85em;
+      color: #777;
+      margin-top: 10px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="blog-post">
+    <h2>Welcome to Priya's Blog</h2>
+    <p>
+      Web-programming lab VIT Chennai.<br>
+      Priya Baskar 23BCE1033.<br>
+      CSS practice.<br> This is some sample content for the BLOG POST.
+    </p>
+    <p>Posted on: 2/2/25 </span></p>
+    
+    <button class="read-more" onclick="toggleContent()">Read More</button>
+    <button class="like-button" onclick="likePost()">❤️ Like (<span id="like-count">0</span>)</button>
+    
+    <div class="extra-content" id="extra-content">
+      <p>
+        This blog will feature tutorials, resources, and personal insights related to web development. 
+        Stay tuned for HTML, CSS, JavaScript tricks, and project showcases!
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function toggleContent() {
+      const content = document.getElementById('extra-content');
+      const button = document.querySelector('.read-more');
+      if (content.style.display === 'block') {
+        content.style.display = 'none';
+        button.textContent = 'Read More';
+      } else {
+        content.style.display = 'block';
+        button.textContent = 'Show Less';
+      }
+    }
+
+    let likeCount = 0;
+    function likePost() {
+      likeCount++;
+      document.getElementById('like-count').textContent = likeCount;
+    }
+
+    // Display today's date
+    document.getElementById('date').textContent = new Date().toLocaleDateString();
+  </script>
+</body>
+</html>

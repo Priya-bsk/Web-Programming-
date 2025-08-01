@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dropdown Menu Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .dropdown-container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        select {
+            width: 250px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            font-size: 16px;
+            appearance: none;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #2980b9;
+        }
+
+        #displaySelection {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <div class="dropdown-container">
+        <h2>Choose Your Favorite Programming Language</h2>
+        <select id="languageDropdown">
+            <option value="">Select a Language</option>
+            <option value="python">Python</option>
+            <option value="javascript">JavaScript</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+            <option value="ruby">Ruby</option>
+            <option value="swift">Swift</option>
+        </select>
+
+        <p id="displaySelection">Selected Option Will Appear Here</p>
+
+        <script>
+       
+            const dropdown = document.getElementById('languageDropdown');
+            const displaySelection = document.getElementById('displaySelection');
+            dropdown.addEventListener('change', function() {
+                const selectedOption = this.options[this.selectedIndex];
+                
+                alert(`You selected: ${selectedOption.text}`);
+
+                displaySelection.textContent = `Selected Language: ${selectedOption.text}`;
+            });
+        </script>
+    </div>
+</body>
+</html>

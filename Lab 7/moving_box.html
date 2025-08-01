@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moving Box</title>
+  <style>
+
+    body{
+        background-color: black;
+    }
+
+    .box {
+      width: 200px;
+      height: 200px;
+      background-color: #b434db;
+      position: absolute;
+      top: 50%; 
+      left: 0;
+      animation: moveBox 5s linear infinite;
+    }
+
+    
+    @keyframes moveBox {
+      0% {
+        left: 0; 
+      }
+      100% {
+        left: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <br><br><br><br>
+    <p style="text-align: center;">The Urban Life</p>
+  </div>
+
+</body>
+</html>

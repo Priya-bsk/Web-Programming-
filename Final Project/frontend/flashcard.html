@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyCards - Interactive Flashcards</title>
+    <style>
+        :root {
+            --primary: #f0d9ff;
+            --secondary: #bde0fe;
+            --accent: #a2d2ff;
+            --text: #2b2d42;
+            --success: #caffbf;
+            --warning: #ffadad;
+            --question-bg: #e0f4ff;
+            --answer-bg: #ffecb3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--accent);
+            color: var(--text);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .flashcard-container {
+            position: relative;
+            min-height: 250px;
+            margin-bottom: 2rem;
+        }
+
+        .flashcard {
+            padding: 2rem;
+            border-radius: 10px;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .flashcard.question {
+            background-color: var(--question-bg);
+        }
+
+        .flashcard.answer {
+            background-color: var(--answer-bg);
+        }
+
+        .flashcard:hover {
+            transform: scale(1.02);
+        }
+
+        .mastered-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            background-color: var(--success);
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .add-card-form {
+            background-color: var(--secondary);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--accent);
+            border-radius: 5px;
+            margin-top: 0.5rem;
+        }
+
+        .progress {
+            background-color: var(--secondary);
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            background-color: var(--success);
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.3s;
+        }
+
+        .stats {
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            padding: 1rem;
+            background-color: var(--secondary);
+            border-radius: 10px;
+        }
+
+        .card-counter {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .mastery-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .mastery-buttons button.mastered {
+            background-color: var(--success);
+        }
+
+        .mastery-buttons button.not-mastered {
+            background-color: var(--warning);
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-container"></div>
+    <script src="include-nav.js"></script>
+    <div class="container">
+        <header>
+            <h1>📚 StudyCards</h1>
+            <p>Create and review flashcards with spaced repetition</p>
+        </header>
+
+        <div class="controls">
+            <button onclick="toggleAddCard()">Add Card</button>
+            <button onclick="startQuiz()">Start Quiz</button>
+            <button onclick="showStats()">Show Stats</button>
+        </div>
+
+        <div class="stats" id="stats">
+            Loading stats...
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar" style="width: 0%"></div>
+        </div>
+
+        <div class="add-card-form" id="addCardForm" style="display: none;">
+            <div class="form-group">
+                <label for="question">Question:</label>
+                <textarea id="question" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="answer">Answer:</label>
+                <textarea id="answer" rows="3"></textarea>
+            </div>
+            <button onclick="addCard()">Save Card</button>
+        </div>
+
+        <div class="flashcard-container">
+            <div class="flashcard question" id="flashcard" onclick="flipCard()">
+                Click to start!
+            </div>
+            <div class="navigation-buttons">
+                <button onclick="previousCard()">Previous</button>
+                <button onclick="showNextCard()">Next</button>
+            </div>
+            <div class="mastery-buttons">
+                <button onclick="markMastered(true)" class="mastered">Mark as Mastered</button>
+                <button onclick="markMastered(false)" class="not-mastered">Mark for Review</button>
+            </div>
+            <div class="card-counter" id="cardCounter"></div>
+        </div>
+    </div>
+
+    <script>
+        let cards = [];
+        let currentCardIndex = 0;
+        let currentCard = null;
+        let isShowingQuestion = true;
+        let quizMode = false;
+
+        function toggleAddCard() {
+            const form = document.getElementById('addCardForm');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function addCard() {
+            const question = document.getElementById('question').value;
+            const answer = document.getElementById('answer').value;
+
+            if (question && answer) {
+                cards.push({
+                    question,
+                    answer,
+                    lastReviewed: new Date(),
+                    mastered: false,
+                    reviewCount: 0
+                });
+
+                document.getElementById('question').value = '';
+                document.getElementById('answer').value = '';
+                toggleAddCard();
+                updateStats();
+                showNextCard();
+            }
+        }
+
+        function flipCard() {
+            if (!currentCard) return;
+
+            isShowingQuestion = !isShowingQuestion;
+            const flashcard = document.getElementById('flashcard');
+            flashcard.innerHTML = isShowingQuestion ? currentCard.question : currentCard.answer;
+            flashcard.className = `flashcard ${isShowingQuestion ? 'question' : 'answer'}`;
+            
+            if (currentCard.mastered) {
+                flashcard.innerHTML += '<div class="mastered-indicator">Mastered</div>';
+            }
+        }
+
+        function markMastered(isMastered) {
+            if (!currentCard) return;
+            
+            currentCard.mastered = isMastered;
+            currentCard.lastReviewed = new Date();
+            currentCard.reviewCount++;
+            
+            updateStats();
+            displayCurrentCard();
+        }
+
+        function previousCard() {
+            if (cards.length === 0) return;
+            currentCardIndex = (currentCardIndex - 1 + cards.length) % cards.length;
+            displayCurrentCard();
+        }
+
+        function showNextCard() {
+            if (cards.length === 0) {
+                currentCard = null;
+                document.getElementById('flashcard').innerHTML = 'Click "Add Card" to create your first flashcard!';
+                updateCardCounter();
+                return;
+            }
+            currentCardIndex = (currentCardIndex + 1) % cards.length;
+            displayCurrentCard();
+        }
+
+        function displayCurrentCard() {
+            currentCard = cards[currentCardIndex];
+            isShowingQuestion = true;
+            const flashcard = document.getElementById('flashcard');
+            flashcard.className = 'flashcard question';
+            flashcard.innerHTML = currentCard.question;
+            
+            if (currentCard.mastered) {
+                flashcard.innerHTML += '<div class="mastered-indicator">Mastered</div>';
+            }
+            
+            updateCardCounter();
+        }
+
+        function updateCardCounter() {
+            const counter = document.getElementById('cardCounter');
+            if (cards.length > 0) {
+                counter.innerHTML = `Card ${currentCardIndex + 1} of ${cards.length}`;
+            } else {
+                counter.innerHTML = 'No cards yet';
+            }
+        }
+
+        function startQuiz() {
+            quizMode = !quizMode;
+            const quizButton = document.querySelector('.controls button:nth-child(2)');
+            quizButton.innerHTML = quizMode ? 'End Quiz' : 'Start Quiz';
+            if (cards.length > 0) {
+                currentCardIndex = 0;
+                displayCurrentCard();
+            }
+        }
+
+        function updateStats() {
+            const masteredCount = cards.filter(card => card.mastered).length;
+            const totalCards = cards.length;
+            const progressBar = document.querySelector('.progress-bar');
+            const progressPercentage = totalCards > 0 ? (masteredCount / totalCards) * 100 : 0;
+            
+            progressBar.style.width = `${progressPercentage}%`;
+            
+            const stats = document.getElementById('stats');
+            stats.innerHTML = `
+                <strong>Study Progress:</strong><br>
+                Total Cards: ${totalCards}<br>
+                Mastered: ${masteredCount} (${Math.round(progressPercentage)}%)<br>
+                Needs Review: ${totalCards - masteredCount}<br>
+            `;
+        }
+
+        function showStats() {
+            const flashcard = document.getElementById('flashcard');
+            const masteredCount = cards.filter(card => card.mastered).length;
+            const totalCards = cards.length;
+            
+            if (totalCards === 0) {
+                flashcard.innerHTML = 'No cards added yet!';
+                return;
+            }
+            
+            const averageReviews = cards.reduce((acc, card) => acc + card.reviewCount, 0) / totalCards;
+            
+            flashcard.className = 'flashcard';
+            flashcard.innerHTML = `
+                <h2>Detailed Statistics</h2>
+                <p>Total Cards: ${totalCards}</p>
+                <p>Mastered: ${masteredCount} (${Math.round((masteredCount/totalCards) * 100)}%)</p>
+                <p>Need Review: ${totalCards - masteredCount}</p>
+                <p>Average Reviews per Card: ${averageReviews.toFixed(1)}</p>
+                <p>Most Recent Review: ${new Date().toLocaleDateString()}</p>
+            `;
+        }
+
+        // Initialize with example cards
+        cards.push({
+            question: "What is HTML?",
+            answer: "HTML (HyperText Markup Language) HTML is the standard markup language used to create web pages. It structures content using elements like headings, paragraphs, links, images, and more. Browsers interpret HTML to display websites.",
+            lastReviewed: new Date(),
+            mastered: false,
+            reviewCount: 0
+        });
+
+        cards.push({
+            question: "What is CSS?",
+            answer: "CSS (Cascading Style Sheets) CSS is a stylesheet language used to style and layout web pages. It controls colors, fonts, spacing, positioning, and responsiveness to enhance the appearance of HTML elements.",
+            lastReviewed: new Date(),
+            mastered: false,
+            reviewCount: 0
+        });
+
+        cards.push({
+            question: "What is JS?",
+            answer: "JavaScript is a programming language used to make web pages interactive. It enables dynamic content, animations, event handling, and communication with servers, enhancing user experience.",
+            lastReviewed: new Date(),
+            mastered: false,
+            reviewCount: 0
+        });
+
+        // Initialize display
+        updateStats();
+        displayCurrentCard();
+        updateCardCounter();
+    </script>
+</body>
+</html>

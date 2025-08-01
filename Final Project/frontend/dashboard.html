@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudySync Dashboard</title>
+    <style>
+        
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-bg: #f8f9fc;
+            --sidebar-bg: #a8d8ea;;
+            --primary-color: #a8d8ea;
+            --text-primary: #2e384d;
+            --text-secondary: #aa96da;
+            --success-color: #1cc88a;
+            --warning-color: #f6c23e;
+            --card-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            
+        }
+
+        /* Sidebar Styles */
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: #F8EDEB;
+            color: #6C5B7B;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        
+        .sidebar-logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #FFB6B9;
+        }
+        
+        .nav-category {
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-top: 20px;
+            padding-left: 10px;
+            color: #3d67a5;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: #6C5B7B;
+            text-decoration: none;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background-color: #a8d8ea;;
+        }
+        
+        .nav-icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            width: calc(100% - 280px);
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .dashboard-title { 
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Stats Grid Styles */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Upcoming Section Styles */
+        .upcoming-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .upcoming-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .upcoming-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .task-list {
+            list-style: none;
+        }
+
+        .task-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .task-item p {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .task-item small {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background: rgba(0,0,0,0.05);
+            border-radius: 1rem;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-color), #6589e6);
+            border-radius: 1rem;
+            transition: width 0.5s ease;
+        }
+        /*Calendar*/
+        .calendar-wrapper {
+            width: 50%;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            font-family: Arial, sans-serif;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 5px;
+            background: #f8eaff;
+            border-radius: 8px;
+        }
+
+        .month-year {
+            font-size: 16px;
+            font-weight: bold;
+            color: #8b6ba4;
+        }
+
+        .calendar-nav button {
+            border: none;
+            background: #e8d5f7;
+            color: #8b6ba4;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 2px;
+        }
+
+        .calendar-nav button:hover {
+            background: #d8bff0;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .weekday {
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #8b6ba4;
+            padding: 5px;
+            background: #f8eaff;
+            border-radius: 5px;
+        }
+
+        .calendar-day {
+            position: relative;
+            min-height: 40px;
+            padding: 5px;
+            background: #fff;
+            border: 1px solid #f0e6ff;
+            border-radius: 5px;
+        }
+
+        .calendar-day:hover {
+            background: #f8eaff;
+        }
+
+        .other-month {
+            background: #f9f9f9;
+            color: #ccc;
+        }
+
+        .today {
+            background: #e6f3ff;
+            border: 1px solid #b5d8ff;
+        }
+
+        .has-task {
+            background: #865da557;
+        }
+
+        .day-number {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .task-label {
+            font-size: 10px;
+            padding: 2px 4px;
+            margin: 2px 0;
+            border-radius: 3px;
+            color: #fff;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .task-academic { background: #a7d7c5; }
+        .task-exam { background: #ffb5b5; }
+        .task-assignment { background: #b5a6e0; }
+        .task-personal { background: #ffd6a5; }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            .main-content {
+                margin-left: 240px;
+                width: calc(100% - 240px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 0;
+                padding: 0;
+                visibility: hidden;
+            }
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .upcoming-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation Effects */
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .stat-card, .upcoming-card {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-logo">StudySync</div>
+            <nav>
+                <!-- Dashboard Section -->
+                <div class="nav-category">Overview</div>
+                <a href="#" class="nav-item active"><span class="nav-icon">📊</span> Dashboard</a>
+                <a href="academic_progress.html" class="nav-item"><span class="nav-icon">📈</span>Academic Progress</a>
+                <a href="calendar.html" class="nav-item"><span class="nav-icon">📅</span>Calendar</a>
+    
+                <!-- Academic Tools -->
+                <div class="nav-category">Academic Tools</div>
+                <a href="course.html" class="nav-item"><span class="nav-icon">📚</span> Courses</a>
+                <a href="exam_and_assignment_tracker.html" class="nav-item"><span class="nav-icon">📖</span> Exams and Assignments</a>
+                <a href="notes.html" class="nav-item"><span class="nav-icon">📝</span> Notes</a>
+                <a href="gpa_calc.html" class="nav-item"><span class="nav-icon">🧮</span> GPA Calculator</a>
+    
+                <!-- Study Tools -->
+                <div class="nav-category">Study Tools</div>
+                <a href="timer.html" class="nav-item"><span class="nav-icon">⏳</span> Timer</a>
+                <a href="flashcard.html" class="nav-item"><span class="nav-icon">🃏</span> Flashcards</a>
+                <a href="mind_map.html" class="nav-item"><span class="nav-icon">🧠🗺️</span> Mind map</a>
+                <a href="task_manager.html" class="nav-item"><span class="nav-icon">✅</span> Task Manager</a>
+                <a href="study_and_chill.html" class="nav-item"><span class="nav-icon">🎶☕</span>Study and Chill</a>
+                <a href="study_reflection.html" class="nav-item"><span class="nav-icon">📝</span>Study Reflection</a>
+                <a href="vision_board.html" class="nav-item"><span class="nav-icon">🖍️📌</span>Interactive Vision Board</a>
+
+                <!--Mental Wellbeing-->
+                <a href="mood_tracker.html" class="nav-item"><span class="nav-icon">🃏</span>Mood Tracker</a>
+
+                <!-- Progress & Goals -->
+                <div class="nav-category">Progress & Goals</div>
+                <a href="goal_setter.html" class="nav-item"><span class="nav-icon">🎯</span> Goal Setter</a>
+                <a href="achievements.html" class="nav-item"><span class="nav-icon">🏆</span> Achievements</a>
+    
+                <!-- Social -->
+                <div class="nav-category">Social</div>
+                <a href="collaborative_study_groups.html" class="nav-item"><span class="nav-icon">👥</span> Study Groups</a>
+                <a href="peer_mentorship.html" class="nav-item"><span class="nav-icon">🤝</span> Peer Mentorship</a>
+    
+                <!-- Settings -->
+                <div class="nav-category">Settings</div>
+                <a href="preference.html" class="nav-item"><span class="nav-icon">⚙️</span> Preferences</a>
+                <a href="homepage.html" class="nav-item"><span class="nav-icon">🚪</span> Log Out</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header>
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Welcome back, Student!</h1>
+                    <p>Track your academic progress and upcoming tasks</p>
+                    <div class="user-profile">
+                        <div class="profile-pic"></div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3 class="stat-title">Current GPA</h3>
+                    <p class="stat-value">9.5</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">Completed Courses</h3>
+                    <p class="stat-value">12/15</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">Study Hours</h3>
+                    <p class="stat-value">28h</p>
+                </div>
+                <div class="stat-card">
+                    <h3 class="stat-title">Assignments</h3>
+                    <p class="stat-value">5 Due</p>
+                </div>
+            </div>
+
+            <div class="upcoming-section">
+                <div class="upcoming-card">
+                    <h3 class="upcoming-title">Upcoming Deadlines</h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <p>Math Assignment</p>
+                            <small>Due in 2 days</small>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 70%"></div>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <p>CN Lab Report</p>
+                            <small>Due in 5 days</small>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 30%"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="upcoming-card">
+                    <h3 class="upcoming-title">Study Goals</h3>
+                    <ul class="task-list">
+                        <li class="task-item">
+                            <p>Complete Chapter 5</p>
+                            <small>Cloud computing</small>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 85%"></div>
+                            </div>
+                        </li>
+                        <li class="task-item">
+                            <p>Practice Problems</p>
+                            <small>Calculus</small>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="calendar-wrapper">
+                <div class="calendar-header">
+                    <div class="calendar-nav">
+                        <button id="prevMonth">←</button>
+                    </div>
+                    <div class="month-year" id="monthYear"></div>
+                    <div class="calendar-nav">
+                        <button id="nextMonth">→</button>
+                    </div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+        
+        </main>
+    </div>
+
+    <script>
+        
+        // Define the tasks object to store events
+    const tasks = {
+    // Example format: 'YYYY-MM-DD': [{title: 'Task name', category: 'category'}]
+    '2025-04-15': [
+        {title: 'Math Exam', category: 'exam'},
+        {title: 'Study Group', category: 'academic'}
+    ],
+    '2025-04-20': [
+        {title: 'Essay Due', category: 'assignment'}
+    ],
+    '2025-04-25': [
+        {title: 'Doctor Appointment', category: 'personal'}
+    ]
+    };
+
+function renderCalendar(year, month) {
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startingDay = firstDay.getDay();
+    const monthLength = lastDay.getDate();
+    const today = new Date();
+
+    // Update month and year display
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                      'July', 'August', 'September', 'October', 'November', 'December'];
+    document.getElementById('monthYear').textContent = `${monthNames[month]} ${year}`;
+
+    // Clear grid
+    const grid = document.getElementById('calendarGrid');
+    grid.innerHTML = '';
+
+    // Add weekday headers
+    const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    weekdays.forEach(day => {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'weekday';
+        dayElement.textContent = day;
+        grid.appendChild(dayElement);
+    });
+
+    // Add days
+    let dayCount = 1;
+    const totalCells = Math.ceil((startingDay + monthLength) / 7) * 7;
+
+    for (let i = 0; i < totalCells; i++) {
+        const dayCell = document.createElement('div');
+        dayCell.className = 'calendar-day';
+
+        if (i < startingDay || dayCount > monthLength) {
+            dayCell.classList.add('other-month');
+            const otherMonthDay = i < startingDay 
+                ? new Date(year, month, -startingDay + i + 1).getDate()
+                : new Date(year, month + 1, dayCount - monthLength).getDate();
+            dayCell.innerHTML = `<div class="day-number">${otherMonthDay}</div>`;
+        } else {
+            const dateString = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayCount).padStart(2, '0')}`;
+            
+            // Check if it's today
+            if (year === today.getFullYear() && month === today.getMonth() && dayCount === today.getDate()) {
+                dayCell.classList.add('today');
+            }
+
+            // Add day number
+            dayCell.innerHTML = `<div class="day-number">${dayCount}</div>`;
+
+            // Add tasks if they exist
+            if (tasks[dateString]) {
+                dayCell.classList.add('has-task');
+                tasks[dateString].forEach(task => {
+                    const taskElement = document.createElement('div');
+                    taskElement.className = `task-label task-${task.category}`;
+                    taskElement.textContent = task.title;
+                    dayCell.appendChild(taskElement);
+                });
+            }
+
+            dayCount++;
+        }
+        grid.appendChild(dayCell);
+    }
+}
+
+// Initialize calendar
+let currentDate = new Date();
+let currentMonth = currentDate.getMonth();
+let currentYear = currentDate.getFullYear();
+
+renderCalendar(currentYear, currentMonth);
+
+// Add event listeners for navigation
+document.getElementById('prevMonth').addEventListener('click', () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+    }
+    renderCalendar(currentYear, currentMonth);
+});
+
+document.getElementById('nextMonth').addEventListener('click', () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
+    renderCalendar(currentYear, currentMonth);
+});
+
+// Function to add a new task
+function addTask(date, title, category) {
+    const dateString = date; // Should be in format 'YYYY-MM-DD'
+    
+    if (!tasks[dateString]) {
+        tasks[dateString] = [];
+    }
+    
+    tasks[dateString].push({
+        title: title,
+        category: category
+    });
+    
+    // Re-render the calendar to show the new task
+    renderCalendar(currentYear, currentMonth);
+}
+
+// Example usage:
+// addTask('2025-04-10', 'Project Meeting', 'academic');
+    </script>
+</body>
+</html>

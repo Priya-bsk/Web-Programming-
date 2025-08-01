@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Wellbeing, Mentorship & Feedback</title>
+ <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ <style>
+ body {
+ font-family: 'Poppins', sans-serif;
+ background: linear-gradient(135deg, #76E6FF, #A896FF);
+ text-align: center;
+ padding: 40px;
+ color: #333;
+ }
+ .container {
+ max-width: 600px;
+ margin: auto;
+ background: white;
+ padding: 30px;
+ border-radius: 20px;
+ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+ }
+ h1 {
+ font-size: 26px;
+ margin-bottom: 20px;
+ }
+ select, input, button, textarea {
+ width: 100%;
+ padding: 12px;
+ margin-top: 10px;
+ border: none;
+ border-radius: 8px;
+ font-size: 16px;
+ }
+ button {
+ background: #6C63FF;
+ color: white;
+ cursor: pointer;
+ transition: 0.3s;
+ }
+ button:hover {
+ background: #5548E5;
+ }
+ .feedback-list, .mood-list, .mentor-list {
+ margin-top: 20px;
+ text-align: left;
+ }
+ .feedback-item, .mood-item, .mentor-item {
+ background: #f8f8f8;
+ padding: 10px;
+ border-radius: 8px;
+ margin-top: 10px;
+ }
+ .chart-container {
+ margin-top: 30px;
+ }
+ </style>
+</head>
+<body>
+  <div id="nav-container"></div>
+<script src="include-nav.js"></script>
+ <div class="container">
+ <h1>Wellbeing, Mentorship & Feedback</h1>
+ <h2>Mood & Wellbeing</h2>
+ <input type="text" id="moodType" placeholder="Enter your mood (e.g., Happy, Stressed)">
+ <input type="number" id="moodPercentage" placeholder="Mood Percentage (0-100)">
+ <button onclick="addMood()">Add Mood</button>
+ <div class="mood-list" id="moodList"></div>
+ <canvas id="moodChart" class="chart-container"></canvas>
+ <h2>Peer Feedback</h2>
+ <textarea id="feedbackText" placeholder="Enter your feedback..."></textarea>
+ <button onclick="addFeedback()">Submit Feedback</button>
+ <div class="feedback-list" id="feedbackList"></div>
+ <h2>Find a Mentor</h2>
+ <select id="mentorCategory">
+ <option value="Career Growth">Career Growth</option>
+ <option value="Mental Wellbeing">Mental Wellbeing</option>
+ <option value="Tech Skills">Tech Skills</option>
+ <option value="Leadership">Leadership</option>
+ </select>
+ <button onclick="findMentor()">Find Mentor</button>
+ <div class="mentor-list" id="mentorList"></div>
+ </div>
+ <script>
+ let moods = [];
+ let feedbacks = [];
+ let mentors = {
+   "Career Growth": "Dr. Smith - Career Coach",
+   "Mental Wellbeing": "Lisa - Certified Therapist",
+   "Tech Skills": "Raj - Senior Developer",
+   "Leadership": "Emily - Leadership Consultant"
+ };
+
+ let moodChart; // Declare a variable for the chart instance
+
+ function addMood() {
+   let moodType = document.getElementById("moodType").value;
+   let moodPercentage = document.getElementById("moodPercentage").value;
+   
+   if (moodType.trim() === "" || moodPercentage === "" || moodPercentage < 0 || moodPercentage > 100) {
+     alert("Please enter a valid mood and percentage (0-100)!");
+     return;
+   }
+   
+   let moodList = document.getElementById("moodList");
+   let moodItem = document.createElement("div");
+   moodItem.classList.add("mood-item");
+   moodItem.innerHTML = `<strong>${moodType}:</strong> ${moodPercentage}%`;
+   moodList.appendChild(moodItem);
+   
+   moods.push({ moodType, moodPercentage });
+   document.getElementById("moodType").value = "";
+   document.getElementById("moodPercentage").value = "";
+   updateMoodChart();
+ }
+
+ function addFeedback() {
+   let feedbackText = document.getElementById("feedbackText").value;
+   if (feedbackText.trim() === "") {
+     alert("Please enter feedback!");
+     return;
+   }
+   let feedbackList = document.getElementById("feedbackList");
+   let feedbackItem = document.createElement("div");
+   feedbackItem.classList.add("feedback-item");
+   feedbackItem.innerHTML = feedbackText;
+   feedbackList.appendChild(feedbackItem);
+   feedbacks.push(feedbackText);
+   document.getElementById("feedbackText").value = "";
+ }
+
+ function findMentor() {
+   let category = document.getElementById("mentorCategory").value;
+   let mentorName = mentors[category];
+   let mentorList = document.getElementById("mentorList");
+   let mentorItem = document.createElement("div");
+   mentorItem.classList.add("mentor-item");
+   mentorItem.innerHTML = `<strong>Recommended Mentor:</strong> ${mentorName}`;
+   mentorList.innerHTML = ""; // Clear previous result
+   mentorList.appendChild(mentorItem);
+ }
+
+ function updateMoodChart() {
+   let ctx = document.getElementById("moodChart").getContext("2d");
+   let labels = moods.map(m => m.moodType);
+   let data = moods.map(m => m.moodPercentage);
+   
+   // If the chart already exists, destroy it before creating a new one
+   if (moodChart) {
+     moodChart.destroy();
+   }
+
+   moodChart = new Chart(ctx, {
+     type: 'bar',
+     data: {
+       labels: labels,
+       datasets: [{
+         label: 'Mood Levels',
+         data: data,
+         backgroundColor: '#6C63FF',
+         borderWidth: 1
+       }]
+     },
+     options: {
+       responsive: true,
+       scales: {
+         y: { beginAtZero: true, max: 100 }
+       }
+     }
+   });
+ }
+ </script>
+</body>
+</html>

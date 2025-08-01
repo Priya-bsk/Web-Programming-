@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palindrome Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #032f8172;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #032f8172;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input {
+            width: 90%;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .result {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        .check {
+            margin-top:10px;
+            padding:10px;
+            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(33, 16, 186, 0.472);
+            border-radius: 5px;
+            color:white;
+            cursor:pointer;
+        }
+        p{
+            background-color: rgba(47, 15, 190, 0.687);
+            color:white;
+            font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Palindrome Checker</h2>
+        
+        <details>
+            <summary>What is a palindrome?</summary>
+            <p>A palindrome is a word, phrase, number, or other sequence of characters that reads the same forward and backward.</p>
+        </details>
+        
+        <input type="text" id="inputText" placeholder="Enter a word or phrase">
+        <button type="button" class="check" onclick="checkPalindrome()">Check</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function checkPalindrome() {
+            const inputText = document.getElementById("inputText").value.trim();
+            
+            if (inputText === '') {
+                document.getElementById("result").innerText = 'Please enter a word or phrase.';
+                return;
+            }
+
+            const input = inputText.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+            const reversedInput = input.split('').reverse().join('');
+
+            let resultMessage = '';
+            if (input === reversedInput) {
+                resultMessage = `${inputText} is a palindrome.`;
+            } else {
+                resultMessage = `${inputText} is not a palindrome.`;
+            }
+
+            document.getElementById("result").innerText = resultMessage;
+        }
+    </script>
+</body>
+</html>

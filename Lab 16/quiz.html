@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+       
+      padding: 0;
+      
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+ 
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    form {
+       background: radial-gradient(circle, #a822a8, #97d9e1);;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 500px;
+      animation: fadeIn 1s ease;
+    }
+
+    .question {
+      margin-bottom: 25px;
+      text-align: left;
+    }
+
+    .question p {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      background-color: #f7f7f7;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    label:hover {
+      background-color: #bf6bdead;
+    }
+
+    input[type="radio"] {
+      margin-right: 8px;
+    }
+
+    button {
+      background-color: #da00eab2;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #4500b5;
+    }
+
+    #result {
+      margin-top: 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #444;
+      text-align: center;
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Multiple-Choice Quiz</h2>
+
+  <form id="quizForm">
+    <div class="question">
+      <p>1. What is the capital of France?</p>
+      <label><input type="radio" name="q1" value="Paris"> Paris</label>
+      <label><input type="radio" name="q1" value="London"> London</label>
+      <label><input type="radio" name="q1" value="Berlin"> Berlin</label>
+    </div>
+
+    <div class="question">
+      <p>2. What is 5 + 3?</p>
+      <label><input type="radio" name="q2" value="7"> 7</label>
+      <label><input type="radio" name="q2" value="8"> 8</label>
+      <label><input type="radio" name="q2" value="9"> 9</label>
+    </div>
+
+    <div class="question">
+      <p>3. What is the largest planet in our solar system?</p>
+      <label><input type="radio" name="q3" value="Earth"> Earth</label>
+      <label><input type="radio" name="q3" value="Jupiter"> Jupiter</label>
+      <label><input type="radio" name="q3" value="Mars"> Mars</label>
+    </div>
+
+    <br>
+    <button type="button" onclick="submitQuiz()">Submit Quiz</button>
+  </form>
+
+  <h3 id="result"></h3>
+
+  <script>
+    function submitQuiz() {
+      const answers = { q1: "Paris", q2: "8", q3: "Jupiter" };
+      let score = 0;
+      const total = Object.keys(answers).length;
+
+      document.querySelectorAll(".question").forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i + 1}"]:checked`);
+        if (selected) {
+          if (selected.value === answers[`q${i + 1}`]) {
+            score++;
+            q.style.color = "green";
+          } else {
+            q.style.color = "red";
+          }
+        } else {
+          q.style.color = "#555";
+        }
+      });
+
+      document.getElementById("result").textContent = `You scored ${score} out of ${total}!`;
+    }
+  </script>
+
+</body>
+</html>

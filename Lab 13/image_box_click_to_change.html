@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Box with Click-to-Change</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .image-box {
+            position: relative;
+            display: inline-block;
+            margin: 20px;
+        }
+        .image-box img {
+            width: 200px;
+            height: 200px;
+            border: 3px solid transparent;
+            transition: transform 0.3s ease, border 0.3s ease;
+            cursor: pointer;
+        }
+        .image-box img:hover {
+            transform: scale(1.1);
+        }
+        .tooltip {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .image-box:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .selected {
+            border: 3px solid blue !important;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            justify-content: center;
+        }
+        .reset-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: red;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .reset-btn:hover {
+            background-color: darkred;
+        }
+        .dropdown {
+            margin-top: 20px;
+            font-size: 16px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Image Box with Click-to-Change</h2>
+        <div class="grid">
+            <div class="image-box" onclick="changeImage(this)">
+                <img src="Urban_life_2.jpeg" alt="Image 1">
+                <div class="tooltip">Click to change image</div>
+            </div>
+            <div class="image-box" onclick="changeImage(this)">
+                <img src="Urban_life_4.jpeg" alt="Image 2">
+                <div class="tooltip">Click to change image</div>
+            </div>
+            <div class="image-box" onclick="changeImage(this)">
+                <img src="Urban_life_8.jpeg" alt="Image 3">
+                <div class="tooltip">Click to change image</div>
+            </div>
+        </div>
+        <select class="dropdown" onchange="changeImageDropdown(this)">
+            <option value="image1.jpg">Image 1</option>
+            <option value="image2.jpg">Image 2</option>
+            <option value="image3.jpg">Image 3</option>
+        </select>
+        <button class="reset-btn" onclick="resetImages()">Reset</button>
+    </div>
+
+    <script>
+        let images = ["Urban_life_1.jpeg","Urban_life_2.jpeg","Urban_life_3.jpeg","Urban_life_4.jpeg","Urban_life_5.jpeg","Urban_life_6.jpeg","Urban_life_7.jpeg", "Urban_life_8.jpeg"];
+
+        function changeImage(element) {
+            let img = element.querySelector("img");
+            let currentSrc = img.src.split("/").pop();
+            let index = images.indexOf(currentSrc);
+            let newSrc = images[(index + 1) % images.length];
+            img.src = newSrc;
+            
+            document.querySelectorAll(".image-box img").forEach(img => img.classList.remove("selected"));
+            img.classList.add("selected");
+        }
+        
+        function changeImageDropdown(dropdown) {
+            let selectedValue = dropdown.value;
+            document.querySelectorAll(".image-box img").forEach(img => {
+                img.src = selectedValue;
+            });
+        }
+
+        function resetImages() {
+            document.querySelectorAll(".image-box img").forEach((img, index) => {
+                img.src = images[index % images.length];
+                img.classList.remove("selected");
+            });
+        }
+    </script>
+</body>
+</html>

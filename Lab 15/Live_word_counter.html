@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Word Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        textarea {
+            width: 80%;
+            height: 150px;
+            padding: 10px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            font-size: 16px;
+            resize: none;
+        }
+        p {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        span {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Live Word Counter</h2>
+    <textarea id="textInput" placeholder="Start typing..."></textarea>
+    <p>Word Count: <span id="wordCount">0</span></p>
+
+    <script>
+        function countWords() {
+            let text = document.getElementById("textInput").value.trim();
+            let words = text.length === 0 ? 0 : text.split(/\s+/).length;
+            document.getElementById("wordCount").textContent = words;
+        }
+
+        document.getElementById("textInput").addEventListener("input", countWords);
+    </script>
+
+</body>
+</html>

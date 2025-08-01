@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Stacking with Z-Index</title>
+    <style>
+        .image-container {
+            position: relative;
+        }
+
+        .stacked-image {
+            position: absolute;
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #image1 {
+            top: 50px;
+            left: 100px;
+            z-index: 1;
+        }
+
+        #image2 {
+            top: 100px;
+            left: 200px;
+            z-index: 2;
+        }
+
+        #image3 {
+            top: 150px;
+            left: 300px;
+            z-index: 3;
+        }
+    </style>
+</head>
+<body>
+    <div class="image-container">
+        <img src="Urban_life_1.jpeg" class="stacked-image" id="image1" style="z-index: 1;">
+        <img src="Urban_life_2.jpeg" class="stacked-image" id="image2" style="z-index: 2;">
+        <img src="Urban_life_3.jpeg" class="stacked-image" id="image3" style="z-index: 3;">
+    </div>
+
+    <script>
+        const images = document.querySelectorAll('.stacked-image');
+        
+        let maxZIndex = 3;
+
+        images.forEach(image => {
+            image.addEventListener('click', function() {
+                maxZIndex++;
+                this.style.zIndex = maxZIndex;
+            });
+        });
+    </script>
+</body>
+</html>

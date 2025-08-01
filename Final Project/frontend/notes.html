@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Manager</title>
+    <style>
+        :root {
+            --primary: #FFB5B5;
+            --secondary: #B5D8FF;
+            --accent: #B5FFD9;
+            --background: #FFF5F5;
+            --text: #4A4A4A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+        }
+
+        .navbar {
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .upload-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            text-align: center;
+            border: 2px dashed #ddd;
+        }
+
+        .upload-area {
+            padding: 2rem;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .upload-area:hover {
+            background-color: var(--background);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .file-info {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .upload-progress {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .note-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .note-header {
+            padding: 1rem;
+            background-color: var(--secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .note-content {
+            padding: 1rem;
+        }
+
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .tag {
+            background-color: var(--accent);
+            padding: 0.3rem 0.6rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            display: inline-block;
+            margin-bottom: 0.3rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: var(--primary);
+            color: var(--text);
+            margin: 0 0.2rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: white;
+        }
+
+        .filter-btn.active {
+            background-color: var(--secondary);
+            font-weight: bold;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        .clear-uploads {
+            background-color: var(--primary);
+            color: var(--text);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .no-results {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .notes-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-container"></div>
+    <script src="include-nav.js"></script>
+
+    <div class="container">
+        <div class="upload-section">
+            <div class="upload-area" id="dropZone">
+                <div class="upload-icon">📁</div>
+                <h2>Upload Your Notes</h2>
+                <p>Drag and drop files here or click to browse</p>
+                <p style="color: #666; margin-top: 0.5rem;">Supported formats: PDF, DOC, DOCX, TXT, PNG, JPG</p>
+                <input type="file" id="fileInput" multiple style="display: none">
+            </div>
+            <div class="file-info" id="fileInfo"></div>
+            <div class="upload-progress" id="uploadProgress">
+                <p>Uploading files...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+            <button class="clear-uploads" id="clearUploads">Clear Uploads</button>
+        </div>
+
+        <input type="text" class="search-bar" id="searchBar" placeholder="Search your notes...">
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All Notes</button>
+            <button class="filter-btn" data-filter="PDF">PDFs</button>
+            <button class="filter-btn" data-filter="Document">Documents</button>
+            <button class="filter-btn" data-filter="Image">Images</button>
+            <button class="filter-btn" data-filter="recent">Recent</button>
+        </div>
+
+        <div class="notes-grid" id="notesGrid">
+            <!-- Notes will be rendered here -->
+        </div>
+    </div>
+
+    <script>
+        // Sample notes data - expanded with more examples
+        const notes = [
+            {
+                id: 1,
+                name: "Data Structures Notes.pdf",
+                type: "PDF",
+                size: "2.5 MB",
+                uploadDate: "2025-03-15",
+                tags: ["BCSE301", "Study Material"],
+                subject: "Computer Science"
+            },
+            {
+                id: 2,
+                name: "Algorithm Analysis.docx",
+                type: "Document",
+                size: "1.8 MB",
+                uploadDate: "2025-04-02",
+                tags: ["BCSE302", "Lecture Notes"],
+                subject: "Computer Science"
+            },
+            {
+                id: 3,
+                name: "Project Screenshots.png",
+                type: "Image",
+                size: "4.2 MB",
+                uploadDate: "2025-04-10",
+                tags: ["BCSE405", "Project", "UI Design"],
+                subject: "Software Engineering"
+            },
+            {
+                id: 4,
+                name: "Machine Learning Formulas.pdf",
+                type: "PDF",
+                size: "3.1 MB",
+                uploadDate: "2025-03-28",
+                tags: ["BCSE401", "Reference"],
+                subject: "Artificial Intelligence"
+            },
+            
+        ];
+
+        // Keep track of all notes, including uploaded ones
+        let allNotes = [...notes];
+        let currentFilter = 'all';
+        let searchTerm = '';
+
+        function createNoteCard(note) {
+            return `
+                <div class="note-card" data-id="${note.id}" data-type="${note.name}">
+                    <div class="note-header">
+                        <div class="file-type"><strong>${note.name}<strong></div>
+                        <div class="actions">
+                            <button class="action-btn download-btn">Download</button>
+                            <button class="action-btn share-btn">Share</button>
+                        </div>
+                    </div>
+                    <div class="note-content">
+                        <h3>${note.type}</h3>
+                        <div style="margin-top: 0.5rem;">
+                            ${note.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="note-meta">
+                            <span>${note.size}</span>
+                            <span>Uploaded: ${note.uploadDate}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Render notes based on current filter and search term
+        function renderNotes() {
+            const notesGrid = document.getElementById('notesGrid');
+            
+            // Apply filters and search
+            let filteredNotes = allNotes;
+            
+            // Apply type filter
+            if (currentFilter !== 'all' && currentFilter !== 'recent') {
+                filteredNotes = filteredNotes.filter(note => note.type === currentFilter);
+            } else if (currentFilter === 'recent') {
+                filteredNotes = [...filteredNotes].sort((a, b) => 
+                    new Date(b.uploadDate) - new Date(a.uploadDate)
+                ).slice(0, 3); // Show only the 3 most recent notes
+            }
+            
+            // Apply search filter
+            if (searchTerm) {
+                filteredNotes = filteredNotes.filter(note => 
+                    note.name.toLowerCase().includes(searchTerm) || 
+                    note.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                    note.subject.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Render filtered notes or show "no results" message
+            if (filteredNotes.length > 0) {
+                notesGrid.innerHTML = filteredNotes.map(createNoteCard).join('');
+                // Add event listeners to buttons
+                document.querySelectorAll('.download-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const noteId = e.target.closest('.note-card').dataset.id;
+                        downloadNote(noteId);
+                    });
+                });
+                document.querySelectorAll('.share-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const noteId = e.target.closest('.note-card').dataset.id;
+                        shareNote(noteId);
+                    });
+                });
+            } else {
+                notesGrid.innerHTML = `
+                    <div class="no-results">
+                        <h3>No notes found</h3>
+                        <p>Try adjusting your search or filters.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // File upload handling
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const uploadProgress = document.getElementById('uploadProgress');
+        const progressFill = document.getElementById('progressFill');
+        const clearUploadsBtn = document.getElementById('clearUploads');
+
+        dropZone.addEventListener('click', () => fileInput.click());
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.backgroundColor = 'var(--background)'; // Fixed: Added var() function
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.style.backgroundColor = 'white';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.backgroundColor = 'white';
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        function handleFiles(files) {
+            if (files.length === 0) return;
+            
+            const fileList = Array.from(files);
+            // Display file information
+            fileInfo.style.display = 'block';
+            fileInfo.innerHTML = fileList.map(file => `
+                <div style="margin-bottom: 0.5rem;">
+                    ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)
+                </div>
+            `).join('');
+            
+            // Show upload progress
+            uploadProgress.style.display = 'block';
+            clearUploadsBtn.style.display = 'inline-block';
+            
+            // Simulate upload progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                progressFill.style.width = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        // Add the uploaded files to our notes array
+                        fileList.forEach(file => {
+                            const fileExtension = file.name.split('.').pop().toLowerCase();
+                            let fileType;
+                            
+                            if (['pdf'].includes(fileExtension)) {
+                                fileType = 'PDF';
+                            } else if (['doc', 'docx', 'txt'].includes(fileExtension)) {
+                                fileType = 'Document';
+                            } else if (['png', 'jpg', 'jpeg', 'gif'].includes(fileExtension)) {
+                                fileType = 'Image';
+                            } else {
+                                fileType = 'Other';
+                            }
+                            
+                            const newNote = {
+                                id: allNotes.length + 1,
+                                name: file.name,
+                                type: fileType,
+                                size: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
+                                uploadDate: new Date().toISOString().split('T')[0],
+                                tags: ["Uploaded", fileType],
+                                subject: "Uploaded Files"
+                            };
+                            
+                            allNotes.push(newNote);
+                        });
+                        
+                        // Re-render the notes with the new uploads
+                        renderNotes();
+                    }, 500);
+                }
+            }, 100);
+        }
+
+        // Clear uploads
+        clearUploadsBtn.addEventListener('click', () => {
+            fileInfo.style.display = 'none';
+            uploadProgress.style.display = 'none';
+            clearUploadsBtn.style.display = 'none';
+            progressFill.style.width = '0%';
+            fileInput.value = '';
+        });
+
+        // Filter buttons functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                currentFilter = btn.dataset.filter;
+                renderNotes();
+            });
+        });
+
+        // Search functionality
+        const searchBar = document.getElementById('searchBar');
+        searchBar.addEventListener('input', (e) => {
+            searchTerm = e.target.value.toLowerCase();
+            renderNotes();
+        });
+
+        // Note action functions
+        function downloadNote(noteId) {
+            const note = allNotes.find(n => n.id == noteId);
+            alert(`Downloading: ${note.name}`);
+            // Actual download functionality would be implemented here
+        }
+
+        function shareNote(noteId) {
+            const note = allNotes.find(n => n.id == noteId);
+            alert(`Sharing: ${note.name}`);
+            // Actual sharing functionality would be implemented here
+        }
+
+        // Initial render
+        renderNotes();
+    </script>
+</body>
+</html>

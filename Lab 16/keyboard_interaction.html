@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keyboard Interaction</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; transition: background 0.5s; }
+        #box { width: 100px; height: 100px; background: red; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        #hiddenText { display: none; font-size: 20px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Press keys to see the effects:</h2>
+    <p>Press "C" to change background color, "R" to reset, "S" to show/hide text, "M" to move the box.</p>
+    <div id="box"></div>
+    <p style="color:blue" id="hiddenText">You are going to have an amazing day! :)</p>
+    
+    <script>
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "c" || event.key === "C") {
+                document.body.style.backgroundColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+            } else if (event.key === "r" || event.key === "R") {
+                location.reload();
+            } else if (event.key === "s" || event.key === "S") {
+                let text = document.getElementById("hiddenText");
+                text.style.display = text.style.display === "none" ? "block" : "none";
+            } else if (event.key === "m" || event.key === "M") {
+                let box = document.getElementById("box");
+                let randomX = Math.floor(Math.random() * (window.innerWidth - 100));
+                let randomY = Math.floor(Math.random() * (window.innerHeight - 100));
+                box.style.left = randomX + "px";
+                box.style.top = randomY + "px";
+            }
+        });
+    </script>
+</body>
+</html>

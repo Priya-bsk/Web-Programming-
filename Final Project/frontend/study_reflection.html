@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Reflection Journal</title>
+    <style>
+        :root {
+            --primary: #f8d7dd;
+            --secondary: #d4e6f1;
+            --accent: #f9e4cc;
+            --text: #5d5d5d;
+            --light-bg: #fafafa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: var(--primary);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .reflection-form, .history-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid var(--secondary);
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .rating-group {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .rating-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--secondary);
+            cursor: pointer;
+        }
+
+        .rating-btn.active {
+            background-color: var(--primary);
+        }
+
+        .submit-btn {
+            background-color: var(--accent);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .reflection-card {
+            background-color: var(--light-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="nav-container"></div>
+<script src="include-nav.js"></script>
+    <div class="container">
+        <header>
+            <h1>Study Reflection Journal</h1>
+        </header>
+
+        <section class="reflection-form">
+            <h2>Today's Reflection</h2>
+            <form id="reflectionForm">
+                <div class="form-group">
+                    <label for="subject">Subject/Topic:</label>
+                    <input type="text" id="subject" required>
+                </div>
+
+                <div class="form-group">
+                    <label>How productive was your session?</label>
+                    <div class="rating-group" id="productivityRating">
+                        <button type="button" class="rating-btn" data-rating="1">1</button>
+                        <button type="button" class="rating-btn" data-rating="2">2</button>
+                        <button type="button" class="rating-btn" data-rating="3">3</button>
+                        <button type="button" class="rating-btn" data-rating="4">4</button>
+                        <button type="button" class="rating-btn" data-rating="5">5</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="learned">What did you learn today?</label>
+                    <textarea id="learned" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="challenges">What challenges did you face?</label>
+                    <textarea id="challenges" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="improvement">How can you improve next time?</label>
+                    <textarea id="improvement" rows="3" required></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Save Reflection</button>
+            </form>
+        </section>
+
+        <section class="history-section">
+            <h2>Previous Reflections</h2>
+            <div id="reflectionHistory"></div>
+        </section>
+    </div>
+
+    <script>
+        // Initialize selected rating
+        let selectedRating = 0;
+
+        // Set up rating buttons
+        document.querySelectorAll('.rating-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.rating-btn').forEach(btn => 
+                    btn.classList.remove('active')
+                );
+                button.classList.add('active');
+                selectedRating = parseInt(button.dataset.rating);
+            });
+        });
+
+        // Handle form submission
+        document.getElementById('reflectionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!selectedRating) {
+                alert('Please select a productivity rating');
+                return;
+            }
+
+            const reflection = {
+                date: new Date().toLocaleDateString(),
+                subject: document.getElementById('subject').value,
+                productivity: selectedRating,
+                learned: document.getElementById('learned').value,
+                challenges: document.getElementById('challenges').value,
+                improvement: document.getElementById('improvement').value
+            };
+
+            // Get existing reflections or initialize empty array
+            let reflections = JSON.parse(localStorage.getItem('reflections') || '[]');
+            
+            // Add new reflection at the beginning
+            reflections.unshift(reflection);
+            
+            // Save to localStorage
+            localStorage.setItem('reflections', JSON.stringify(reflections));
+
+            // Reset form
+            this.reset();
+            selectedRating = 0;
+            document.querySelectorAll('.rating-btn').forEach(btn => 
+                btn.classList.remove('active')
+            );
+
+            // Update display
+            updateReflectionHistory();
+            
+            alert('Reflection saved!');
+        });
+
+        // Display reflections
+        function updateReflectionHistory() {
+            const reflections = JSON.parse(localStorage.getItem('reflections') || '[]');
+            const historyHTML = reflections.map(reflection => `
+                <div class="reflection-card">
+                    <h3>${reflection.subject}</h3>
+                    <p><strong>Date:</strong> ${reflection.date}</p>
+                    <p><strong>Productivity Rating:</strong> ${reflection.productivity}/5</p>
+                    <p><strong>Learned:</strong> ${reflection.learned}</p>
+                    <p><strong>Challenges:</strong> ${reflection.challenges}</p>
+                    <p><strong>Areas for Improvement:</strong> ${reflection.improvement}</p>
+                </div>
+            `).join('');
+            
+            document.getElementById('reflectionHistory').innerHTML = historyHTML;
+        }
+
+        // Load existing reflections on page load
+        updateReflectionHistory();
+    </script>
+</body>
+</html>

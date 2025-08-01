@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multimedia Page</title>
+    <style>
+        button{
+            border-radius:5px;
+            padding:10px;
+            background-color: rgba(255, 255, 0, 0.582);
+            box-shadow: 10px 10px 10px rgba(137, 43, 226, 0.418);
+        }
+    </style>
+</head>
+<body>
+    <h2>Video Player</h2>
+    <video id="videoPlayer" height="500" controls>
+        <source src="art.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <h2>Background Music</h2>
+    <div style="display:inline">
+        <audio controls id="bgMusic" src="audio.mp3" autoplay loop "></audio>
+    <button onclick="toggleAudio()">Play/Pause Music</button>
+    </div>
+    
+    
+    <script>
+        function toggleAudio() {
+            var audio = document.getElementById('bgMusic');
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+    </script>
+    <footer>
+        <p style="background-color: rgba(137, 43, 226, 0.418);">&copy Priya Baskar-23BCE1033</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Even/Odd Numbers Display</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        #container {
+            text-align: center;
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: rgb(127, 187, 255);
+            padding: 20px 30px;
+            border-radius: 10px;
+        }
+        button {
+            border: none;
+            border-radius: 5px;
+            box-shadow: 5px 5px 2px rgba(10, 10, 10, 0.4);
+            padding: 10px 20px;
+            font-weight: bold;
+            margin: 10px;
+            background-color: rgb(29, 21, 139);
+            color: white;
+            transition: background-color 0.5s;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: rgba(29, 21, 139, 0.541);
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            font-size: 18px;
+            margin: 5px;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        #evenNumbers li {
+            background-color: #D3F9D8;
+        }
+        #oddNumbers li {
+            background-color: #FFDDC1;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Even/Odd Numbers Display</h1>
+        <p>Priya Baskar 23BCE1033</p>
+        <label for="number">Enter limit number: </label>
+        <input type="number" id="number" min="1" placeholder="Enter a number">
+        <br><br>
+        <button type="button" id="even">Show Even Numbers</button>
+        <button type="button" id="odd">Show Odd Numbers</button>
+    
+        <ul id="evenNumbers"></ul>
+        <ul id="oddNumbers"></ul>
+    </div>
+    
+    <script>
+    
+        function showEvenNumbers() {
+            const limit = document.getElementById("number").value;
+            const evenList = document.getElementById("evenNumbers");
+            const oddList = document.getElementById("oddNumbers");
+     
+            oddList.innerHTML = '';
+            evenList.innerHTML = ''; 
+            
+            if (limit && limit > 0) {
+                for (let i = 0; i <= limit; i += 2) {
+                    const li = document.createElement("li");
+                    li.textContent = i;
+                    evenList.appendChild(li);
+                }
+            } else {
+                alert("Please enter a valid number!");
+            }
+        }
+
+        function showOddNumbers() {
+            const limit = document.getElementById("number").value;
+            const oddList = document.getElementById("oddNumbers");
+            const evenList = document.getElementById("evenNumbers");
+            
+    
+            evenList.innerHTML = '';
+            oddList.innerHTML = ''; 
+            
+            if (limit && limit > 0) {
+                for (let i = 1; i <= limit; i += 2) {
+                    const li = document.createElement("li");
+                    li.textContent = i;
+                    oddList.appendChild(li);
+                }
+            } else {
+                alert("Please enter a valid number!");
+            }
+        }
+
+        document.getElementById("even").addEventListener("click", showEvenNumbers);
+        document.getElementById("odd").addEventListener("click", showOddNumbers);
+    </script>
+</body>
+</html>

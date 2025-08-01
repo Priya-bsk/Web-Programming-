@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple of N Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        #container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 50px auto;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 60%;
+        }
+
+        .checkboxes {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .checkboxes label {
+            margin-right: 15px;
+            font-size: 18px;
+            display: block;
+            cursor: pointer;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4e4caf;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #4e45a0b2;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        ul li {
+            font-size: 18px;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+
+        ul li:nth-child(even) {
+            background-color: #1395d1;
+        }
+
+        ul li:nth-child(odd) {
+            background-color: #ccc1ff;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <h1>Multiple of N Display</h1>
+        <p>Priya Baskar 23BCE1033</p>
+        <label for="limit">Enter the limit: </label>
+        <input type="number" id="limit" placeholder="Enter a number">
+        
+        <div class="checkboxes">
+            <label><input type="checkbox" value="2"> 2</label>
+            <label><input type="checkbox" value="3"> 3</label>
+            <label><input type="checkbox" value="5"> 5</label>
+            <label><input type="checkbox" value="7"> 7</label>
+            <label><input type="checkbox" value="11"> 11</label>
+            <label><input type="checkbox" value="13"> 13</label>
+        </div>
+
+        <button id="generate">Generate Multiples</button>
+
+        <ul id="result"></ul>
+    </div>
+
+    <script>
+        document.getElementById("generate").addEventListener("click", function() {
+            const limit = parseInt(document.getElementById("limit").value); // Get the input number
+            const checkboxes = document.querySelectorAll(".checkboxes input[type='checkbox']:checked");
+            const resultList = document.getElementById("result");
+
+            // Clear the previous results
+            resultList.innerHTML = "";
+
+            if (isNaN(limit) || limit <= 0) {
+                alert("Please enter a valid positive number for the limit.");
+                return;
+            }
+
+            // Loop through each selected checkbox
+            checkboxes.forEach(checkbox => {
+                const multiple = parseInt(checkbox.value);
+                
+                // Generate multiples of the selected number
+                for (let i = multiple; i <= limit; i += multiple) {
+                    const li = document.createElement("li");
+                    li.textContent = `${i} (Multiple of ${multiple})`;
+                    resultList.appendChild(li);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
